@@ -1,0 +1,64 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                     controllers.Application.index
+GET           /login                controllers.Application.login
+POST          /authenticate         controllers.Application.authenticate
+
+GET           /signup               controllers.Application.signUp
+POST          /signup               controllers.Application.signUpProcess
+
+
+GET           /app                  controllers.Application.appMain(url = "")
+GET           /app/*url             controllers.Application.appMain(url)
+
+
+### API Lists ###
+# Model API
+GET           /api/models            apis.ModelAPI.list
+POST          /api/models            apis.ModelAPI.add
+PUT           /api/models/:id        apis.ModelAPI.update(id:Int)
+DELETE        /api/models/:id        apis.ModelAPI.delete(id:Int)
+
+# Modelcolor API
+GET           /api/modelcolors            apis.ModelColorAPI.list
+POST          /api/modelcolors            apis.ModelColorAPI.add
+PUT           /api/modelcolors/:id        apis.ModelColorAPI.update(id:Int)
+DELETE        /api/modelcolors/:id        apis.ModelColorAPI.delete(id:Int)
+
+# Product API
+GET           /api/products            apis.ProductAPI.list
+POST          /api/products            apis.ProductAPI.add
+PUT           /api/products/:id        apis.ProductAPI.update(id:Int)
+DELETE        /api/products/:id        apis.ProductAPI.delete(id:Int)
+
+# ProductLog API
+GET           /api/productlogs            apis.ProductLogAPI.list
+POST          /api/productlogs            apis.ProductLogAPI.add
+PUT           /api/productlogs/:id        apis.ProductLogAPI.update(id:Int)
+DELETE        /api/productlogs/:id        apis.ProductLogAPI.delete(id:Int)
+
+# Sale API
+GET           /api/sales            apis.SaleAPI.list
+POST          /api/sales            apis.SaleAPI.add
+PUT           /api/sales/:id        apis.SaleAPI.update(id:Int)
+DELETE        /api/sales/:id        apis.SaleAPI.delete(id:Int)
+
+# Vendor API
+GET           /api/vendors            apis.VendorAPI.list
+POST          /api/vendors            apis.VendorAPI.add
+PUT           /api/vendors/:id        apis.VendorAPI.update(id:Int)
+DELETE        /api/vendors/:id        apis.VendorAPI.delete(id:Int)
+
+
+# Shop API
+GET           /api/shops            apis.ShopAPI.list
+POST          /api/shops            apis.ShopAPI.add
+PUT           /api/shops/:id        apis.ShopAPI.update(id:Int)
+DELETE        /api/shops/:id        apis.ShopAPI.delete(id:Int)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file         controllers.Assets.at(path="/public", file)

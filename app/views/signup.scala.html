@@ -1,0 +1,60 @@
+@(signUpForm: Form[models.dbmanager.MemberSignUp], errorMsg: Option[String] = None)(implicit request: RequestHeader)
+
+@main("Telecommunication Manager") {
+    <div class="container">
+        @request.flash.get("error").map { msg =>
+            <div class="alert alert-danger">
+                @msg
+            </div>
+        }
+
+        @if(signUpForm.hasGlobalErrors) {
+            <ul>
+            @signUpForm.globalErrors.map { error =>
+                <li>@error.message</li>
+            }
+            </ul>
+        }
+        @helper.form(action = routes.Application.signUpProcess(), 'class -> "form-signin") {
+            <h2 class="form-signin-heading">Please sign in</h2>
+                <!--
+            <input type="text" class="form-control" placeholder="Email address" required="" autofocus="">
+            <input type="password" class="form-control" placeholder="Password" required="">
+-->
+            @helper.inputText(signUpForm("id"),
+                '_label -> "ID",
+                'placeholder -> "ID",
+                'class -> "form-control",
+                'autofocus -> "true"
+            )
+            @helper.inputPassword(signUpForm("password"),
+                '_label -> "password",
+                'placeholder -> "Password",
+                'class -> "form-control"
+            )
+            @helper.inputPassword(signUpForm("password_confirmation"),
+                '_label -> "password confirmation",
+                'placeholder -> "Password Confirmation",
+                'class -> "form-control"
+            )
+            @helper.inputText(signUpForm("name"),
+                '_label -> "name",
+                'placeholder -> "Name",
+                'class -> "form-control"
+            )
+<!--
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+-->
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+        }
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+}
