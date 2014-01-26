@@ -79,8 +79,7 @@ package object apis {
       (member, request)=>
         tableManager.delete(id) match {
           case affectedCount: Int if(affectedCount > 0) => Accepted
-          case 0 => BadRequest
-          case _ => InternalServerError
+          case _ => NotAcceptable
         }
     }
   }

@@ -5,8 +5,8 @@ import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
 import java.sql.{Timestamp, Date}
 
 
-case class Model(id: Option[Int], name: String, createDate: Date = new Date(System.currentTimeMillis())
-                  ) extends HasOptionId[Model] {
+case class Model(id: Option[Int], name: String, status:Int, createDate: Date = new Date(System.currentTimeMillis())
+                  ) extends HasStatusWithId[Model] {
   def withId(id: Int): Model = this.copy(Some(id))
 }
 
@@ -26,13 +26,15 @@ object Models extends CRUD[Model, ModelTable] {
  * 제품 모델..
  * @param tag
  */
-class ModelTable(tag: Tag) extends DBTable[Model](tag, "MODEL") {
+class ModelTable(tag: Tag) extends DBStatusTable[Model](tag, "MODEL") {
   def id = column[Int]("id", O.PrimaryKey, O.NotNull, O.AutoInc)
 
   def name = column[String]("name", O.NotNull)
 
+  def status = column[Int]("status", O.NotNull)
+
   def createDate = column[Date]("create_date", O.NotNull)
 
 
-  def * = (id.?, name, createDate) <>(Model.tupled, Model.unapply)
+  def * = (id.?, name, status, createDate) <>(Model.tupled, Model.unapply)
 }

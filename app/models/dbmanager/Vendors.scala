@@ -7,13 +7,13 @@ import java.sql.Date
 /**
  * Created by teddy on 2014. 1. 20..
  */
-case class Vendor(id: Option[Int], name: String, telecom: Short, phone: String, isMvno:Boolean,
+case class Vendor(id: Option[Int], name: String, telecom: Short, phone: String, isMvno:Boolean, status:Int,
                   createDate: Date = new Date(System.currentTimeMillis())
-                   )extends HasOptionId[Vendor] {
+                   )extends HasStatusWithId[Vendor] {
   def withId(id: Int): Vendor = this.copy(Some(id))
 }
 
-object Vendors extends CRUD[Vendor, VendorTable]{
+object Vendors extends StatusCRUD[Vendor, VendorTable]{
   val table = TableQuery[VendorTable]
 
 //  def list(filter: Map[String, String]) = {
@@ -49,7 +49,7 @@ object Vendors extends CRUD[Vendor, VendorTable]{
  * Manage the vendor table
  * @param tag
  */
-class VendorTable(tag: Tag) extends DBTable[Vendor](tag, "VENDOR") {
+class VendorTable(tag: Tag) extends DBStatusTable[Vendor](tag, "VENDOR") {
   def id = column[Int]("id", O.PrimaryKey, O.NotNull, O.AutoInc)
 
   def name = column[String]("name", O.NotNull)
@@ -60,8 +60,10 @@ class VendorTable(tag: Tag) extends DBTable[Vendor](tag, "VENDOR") {
 
   def isMvno = column[Boolean]("is_mvno", O.NotNull)
 
+  def status = column[Int]("status", O.NotNull)
+
   def createDate = column[Date]("create_date", O.NotNull)
 
-  def * = (id.?, name, telecom, phone, isMvno, createDate) <> (Vendor.tupled, Vendor.unapply)
+  def * = (id.?, name, telecom, phone, isMvno, status, createDate) <> (Vendor.tupled, Vendor.unapply)
 }
 

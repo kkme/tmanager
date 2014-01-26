@@ -10,3 +10,13 @@ trait HasOptionId[E] {
 
   def withId(id:Int):E
 }
+
+trait HasStatusWithId[E] extends HasOptionId[E] {
+  this:E =>
+
+  val id:Option[Int]
+  val status:Int
+
+  def withId(id:Int):E
+}
+

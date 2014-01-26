@@ -7,13 +7,13 @@ import java.sql.{Timestamp, Date}
 
 
 case class Shop(id: Option[Int], name: String, phone: String, email: String,
-                isOnlyMvno: Boolean, createDate: Date = new Date(System.currentTimeMillis()))
-  extends HasOptionId[Shop] {
+                isOnlyMvno: Boolean, status:Int, createDate: Date = new Date(System.currentTimeMillis()))
+  extends HasStatusWithId[Shop] {
   def withId(id: Int) = this.copy(id=Some(id))
 }
 
 
-object Shops extends CRUD[Shop, ShopTable] {
+object Shops extends StatusCRUD[Shop, ShopTable] {
 //  val shop = TableQuery[ShopTable]
 
   val table = TableQuery[ShopTable]
@@ -26,7 +26,7 @@ object Shops extends CRUD[Shop, ShopTable] {
   }
 }
 
-class ShopTable(tag: Tag) extends DBTable[Shop](tag,"SHOP") {
+class ShopTable(tag: Tag) extends DBStatusTable[Shop](tag,"SHOP") {
   def id = column[Int]("id", O.PrimaryKey, O.NotNull, O.AutoInc)
 
   def name = column[String]("name", O.NotNull)
@@ -37,9 +37,11 @@ class ShopTable(tag: Tag) extends DBTable[Shop](tag,"SHOP") {
 
   def isOnlyMvno = column[Boolean]("only_mvno", O.NotNull)
 
+  def status = column[Int]("status", O.NotNull)
+
   def createDate = column[Date]("create_date", O.NotNull)
 
-  def * = (id.?, name, phone, email, isOnlyMvno, createDate) <>(Shop.tupled, Shop.unapply)
+  def * = (id.?, name, phone, email, isOnlyMvno, status, createDate) <>(Shop.tupled, Shop.unapply)
 }
 
 

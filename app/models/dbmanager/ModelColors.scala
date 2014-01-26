@@ -22,7 +22,7 @@ object ModelColors extends CRUD[ModelColor, ModelColorTable] {
  * @param tag
  */
 class ModelColorTable(tag: Tag) extends DBTable[ModelColor](tag, "MODEL_COLOR") {
-  def id = column[Int]("id", O.NotNull, O.PrimaryKey)
+  def id = column[Int]("id", O.NotNull, O.PrimaryKey, O.AutoInc)
 
   def modelId = column[Int]("model_id", O.NotNull)
 

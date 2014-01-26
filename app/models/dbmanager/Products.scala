@@ -5,14 +5,14 @@ import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
 import java.sql.{Timestamp, Date}
 
 
-case class Product(id: Option[Int], modelId: Int, shopId: Int, colorId: Int, serialNumber: Int, status: Short,
+case class Product(id: Option[Int], modelId: Int, shopId: Int, colorId: Int, serialNumber: Int, status: Int,
                    createDate: Date = new Date(System.currentTimeMillis()),
                    modifiedDate: Timestamp = new Timestamp(System.currentTimeMillis())
-                    ) extends HasOptionId[Product] {
+                    ) extends HasStatusWithId[Product] {
   def withId(id: Int): Product = this.copy(id=Some(id))
 }
 
-object Products extends  CRUD[Product, ProductTable] {
+object Products extends  StatusCRUD[Product, ProductTable] {
   val table = TableQuery[ProductTable]
 
   def update(id: Int, m: Product): Int = database withDynSession {
@@ -21,13 +21,14 @@ object Products extends  CRUD[Product, ProductTable] {
     } yield (p.colorId, p.serialNumber, p.status)
     query.update(m.colorId, m.serialNumber, m.status)
   }
+  //TODO - status는 따로 만들어야 하는거 아닌가???
 }
 
 /**
  * Manage the product table
  * @param tag
  */
-class ProductTable(tag: Tag) extends DBTable[Product](tag, "PRODUCT") {
+class ProductTable(tag: Tag) extends DBStatusTable[Product](tag, "PRODUCT") {
   def id = column[Int]("id", O.PrimaryKey, O.NotNull, O.AutoInc)
 
   def vendorId = column[Int]("vendor_id", O.NotNull)
@@ -40,7 +41,7 @@ class ProductTable(tag: Tag) extends DBTable[Product](tag, "PRODUCT") {
 
   def serialNumber = column[Int]("serial_number", O.NotNull)
 
-  def status = column[Short]("status", O.NotNull, O.Default(0: Short))
+  def status = column[Int]("status", O.NotNull, O.Default(0: Short))
 
   def createDate = column[Date]("create_date")
 
@@ -56,7 +57,7 @@ class ProductTable(tag: Tag) extends DBTable[Product](tag, "PRODUCT") {
   def shop = foreignKey("fk_shop_product", shopId, Shops.table)(_.id)
 
   //
-  def * = (id.?, modelId, shopId, color, serialNumber, status, createDate, modifiedDate) <>(Product.tupled, Product.unapply)
+  def * = (id.?, modelId, shopId, colorId, serialNumber, status, createDate, modifiedDate) <>(Product.tupled, Product.unapply)
 }
 
 
