@@ -8,9 +8,12 @@ import play.api.data.Forms._
 import play.api.data._
 import play.api.cache.Cache
 import play.api.Play.current
+import scala.concurrent.Future
 
 
 object Application extends Controller with Secured {
+  val MvnoService = Play.configuration.getBoolean("mvnoService").getOrElse(false)
+  val Master = Play.configuration.getString("application.masterId").get
 
   val memberLoginForm = Form(
     mapping(
@@ -31,12 +34,20 @@ object Application extends Controller with Secured {
   )
 
   def index = Action {
+    Logger.debug(MvnoService.toString)
     Ok(views.html.index("Your new application is ready."))
   }
 
   def login = Action {
     implicit request =>
+      //4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141
       Ok(views.html.login(memberLoginForm))
+  }
+
+  def logout = Action { implicit request =>
+    val user = request.session.get("user")
+    user.map(Cache.remove(_))
+    Redirect(routes.Application.index).withNewSession
   }
 
   def signUp = Action {
@@ -70,8 +81,9 @@ object Application extends Controller with Secured {
       )
   }
 
-  def appMain(url: String) = IsAuthenticated { (user,member) =>
-    Ok("")
+  def appMain(url: String) = AuthenticatedAction {
+    implicit request =>
+      Ok(views.html.app(MvnoService, request.user.name))
   }
 
 }
@@ -91,7 +103,6 @@ trait Secured {
    */
   private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
 
-  // --
 
   /**
    * Action for authenticated users.
@@ -99,7 +110,7 @@ trait Secured {
   def IsAuthenticated(f: => (Member, Request[AnyContent]) => Result) = Security.Authenticated(userKey, onUnauthorized) {
     userKey =>
       Cache.getAs[Member](userKey) match {
-        case Some(user) => Action(request => f(user,request))
+        case Some(user) => Action(request => f(user, request))
         case None =>
           Action {
             request =>
@@ -109,6 +120,36 @@ trait Secured {
               onUnauthorized(request).withNewSession
           }
       }
+  }
+
+  class AuthenticatedRequest[A](val user: Member, request: Request[A]) extends WrappedRequest[A](request)
+
+  object AuthenticatedAPI extends ActionBuilder[AuthenticatedRequest] {
+    def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[SimpleResult]) = {
+      userKey(request).map {
+        userKey =>
+          Cache.getAs[Member](userKey) match {
+            case Some(member) => block(new AuthenticatedRequest(member, request))
+            case None => Future.successful(Results.Unauthorized)
+          }
+      } getOrElse {
+        Future.successful(Results.Unauthorized)
+      }
+    }
+  }
+
+  object AuthenticatedAction extends ActionBuilder[AuthenticatedRequest] {
+    def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[SimpleResult]) = {
+      userKey(request).map {
+        userKey =>
+          Cache.getAs[Member](userKey) match {
+            case Some(member) => block(new AuthenticatedRequest(member, request))
+            case None => Future.successful(onUnauthorized(request))
+          }
+      } getOrElse {
+        Future.successful(onUnauthorized(request))
+      }
+    }
   }
 
   //  /**

@@ -13,12 +13,13 @@ package object dbmanager {
     val DELETED = Value(0)
     val READY = Value(1)
     val SOLD = Value(2)
+    val TAKE_BACK = Value(3)
   }
   object Telecomunication extends Enumeration {
     type TELECOM = Value
     val SKT = Value(1)
-    val KT = Value(1)
-    val LGT = Value(1)
+    val KT = Value(2)
+    val LGT = Value(3)
   }
 }
 

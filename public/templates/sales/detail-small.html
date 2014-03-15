@@ -1,0 +1,6 @@
+<table class="table">
+    <tr><th>모델명</th><td>{{sale.model}}</td></tr>
+    <tr><th>색상</th><td>{{colorManager.getColors(sale.modelId).findById(sale.colorId).color}}</td></tr>
+    <tr><th>입고처</th><td>{{vendors.findById(sale.vendorId).name}}</td></tr>
+    <tr><th>매장</th><td>{{shops.findById(sale.shopId).name}}</td></tr>
+</table>

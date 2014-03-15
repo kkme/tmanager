@@ -1,0 +1,45 @@
+<div id="memeber-main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>멤버 목록</h1>
+            </div>
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" ng-repeat = "item in list | orderBy:'-createDate'"  ng-class="getColor(item.status)">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse-{{item.id}}">
+                                <div class="row text-center">
+                                    <div class="col-sm-1">{{item.id}}</div>
+                                    <div class="col-sm-2">{{item.name}}</div>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse-{{item.id}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table>
+                                <thead>
+                                <th>페이지명</th>
+                                <th>열람</th>
+                                <th>등록</th>
+                                <th>수정</th>
+                                <th>당일 상품 삭제</th>
+                                <th>삭제</th>
+                                </thead>
+                            </table>
+                            <ul class="list-unstyled">
+                                <li ng-repeat="log in productLogs[item.id]">
+                                    제품이 {{log.transferDate | date:'yyyy년MM월dd일 HH시mm분'}}에 {{log.memo}}되었습니다.
+                                </li>
+                            </ul>
+                            <p ng-show="!productLogs[item.id]" class="help-block">(검색중입니다)</p>
+                            <p ng-show="(!!productLogs[item.id] && productLogs[item.id].length ==0)">결과가 없습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

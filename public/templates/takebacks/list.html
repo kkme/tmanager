@@ -1,0 +1,30 @@
+<table class="table table-hover">
+    <thead>
+    <th>모델명</th>
+    <th>색상</th>
+    <th>입고처</th>
+    <th>매장</th>
+    <th>일련번호</th>
+    <th>반품일</th>
+    <th>사유</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in filtered() | limitTo: 50">
+        <td>{{item.model}}</td>
+        <td>{{item.color}}</td>
+        <td>{{item.vendor}}</td>
+        <td>{{item.shop}}</td>
+        <td>{{item.serialNumber}}</td>
+        <td>{{item.createDate | date:'yyyy년MM월dd일'}}</td>
+        <td>{{item.memo}}</td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-link" ng-click="takebacks.remove(item)">
+                    <i class="glyphicon glyphicon-trash" bs-tooltip="'반품 취소'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

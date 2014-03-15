@@ -1,0 +1,172 @@
+@import "./theme/content.editable.less";
+@import "./theme/model.less";
+@import "./theme/sale.less";
+@import "./theme/product-modal.less";
+@import "./typeahead/typeahed.bootstrap.less";
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.total-label {
+  min-height: 30px;
+  vertical-align: middle;
+  line-height: 30px;
+  float:right;
+  margin-right :10px;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  .form-signin-heading, .checkbox {
+    margin-bottom: 10px;
+  }
+  .checkbox {
+    font-weight: normal;
+  }
+  .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    &:focus {
+      z-index: 2;
+    }
+  }
+  input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+
+article {
+  padding-top: 60px;
+
+  /*
+   * Side navigation
+   *
+   * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+   * sections of docs content.
+   */
+
+  /* By default it's not affixed in mobile views, so undo that */
+  .bs-sidebar.affix {
+    position: static;
+    &.mvno {
+      .bs-sidenav {
+        background-color: #F2DEF3;
+        & > li > a:hover,
+        & > li > a:focus {
+          text-decoration: none;
+          background-color: #e0bee1;
+          border-right: 1px solid #dbd8e0;
+        }
+      }
+    }
+
+    /* First level of nav */
+    .bs-sidenav {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      padding-top:    10px;
+      padding-bottom: 10px;
+      text-shadow: 0 1px 0 #fff;
+      background-color: #f7f5fa;
+      border-radius: 5px;
+      .divider {
+        margin-top:10px;
+        border-top:1px solid white;
+      }
+      .title {
+        & > a:hover, & > a:focus {
+          text-decoration: none;
+          background-color: inherit !important;
+          border-right: 1px solid #dbd8e0;
+        }
+      }
+    }
+  }
+
+
+
+  /* All levels of nav */
+  .bs-sidebar .nav > li > a {
+    display: block;
+    color: #716b7a;
+    padding: 5px 20px;
+  }
+  .bs-sidebar .nav > li > a:hover,
+  .bs-sidebar .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #e5e3e9;
+    border-right: 1px solid #dbd8e0;
+  }
+  .bs-sidebar .nav > .active > a,
+  .bs-sidebar .nav > .active:hover > a,
+  .bs-sidebar .nav > .active:focus > a {
+    font-weight: bold;
+    color: #563d7c;
+    background-color: transparent;
+    border-right: 1px solid #563d7c;
+  }
+
+  /* Nav: second level (shown on .active) */
+  .bs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    margin-bottom: 8px;
+  }
+  .bs-sidebar .nav .nav > li > a {
+    padding-top:    3px;
+    padding-bottom: 3px;
+    padding-left: 30px;
+    font-size: 90%;
+  }
+
+  /* Show and affix the side nav when space allows it */
+  @media (min-width: 992px) {
+    .bs-sidebar .nav > .active > ul {
+      display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-sidebar.affix,
+    .bs-sidebar.affix-bottom {
+      width: 140px;
+    }
+    .bs-sidebar.affix {
+      position: fixed; /* Undo the static from mobile first approach */
+      top: 80px;
+    }
+    .bs-sidebar.affix-bottom {
+      position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-sidebar.affix-bottom .bs-sidenav,
+    .bs-sidebar.affix .bs-sidenav {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  @media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-sidebar.affix-bottom,
+    .bs-sidebar.affix {
+      width: 160px;
+    }
+  }
+}

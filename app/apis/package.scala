@@ -1,86 +1,132 @@
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 import java.sql.{Timestamp, Date}
 import java.text.SimpleDateFormat
-import models.dbmanager.{DBTable, HasOptionId, CRUD}
+import models.dbmanager._
+import play.api.cache.{Cache, Cached}
 import play.api.libs.json._
+import play.api.libs.json.JsNumber
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsString
 import play.api.libs.json.JsString
 import play.api.libs.json.JsSuccess
+import play.api.libs.json.JsSuccess
+import play.api.Logger
+import play.api.mvc.SimpleResult
+import play.api.Play.current
+import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits._
 import scala.Some
-import scala.Some
-import scala.Some
+import scala.util.{Failure, Success}
 
 /**
  * Created by teddy on 2014. 1. 21..
  */
 package object apis {
+
   import controllers.Secured
   import play.api.mvc.Controller
-  trait API[A <: HasOptionId[A], T <: DBTable[A], C <: CRUD[A, T]] extends Controller with Secured {
-    val tableManager:C
-    implicit val mappingFormat:Format[A]
 
-    implicit val timeStampFormat= new Format[Timestamp]{
+  trait API[A <: HasOptionId[A], T <: DBTable[A], C <: CRUD[A, T]] extends Controller with Secured {
+    val tableManager: C
+    lazy val className = tableManager.getClass.getName
+    implicit val mappingFormat: Format[A]
+
+    implicit val timeStampFormat = new Format[Timestamp] {
       val format = new SimpleDateFormat("yyyy-MM-dd")
+
       def reads(json: JsValue): JsResult[Timestamp] = JsSuccess(new Timestamp(System.currentTimeMillis()))
 
-      def writes(o: Timestamp): JsValue = JsString(format.format(o))
+      def writes(o: Timestamp): JsValue = JsNumber(o.getTime())
     }
 
-    implicit val date= new Format[Date]{
-      val format = new SimpleDateFormat("yyyy-MM-dd")
+    implicit val date = new Format[Date] {
+      val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+
       def reads(json: JsValue): JsResult[Date] = JsSuccess(new Date(System.currentTimeMillis()))
 
-      def writes(o: Date): JsValue = JsString(format.format(o))
+      def writes(o: Date): JsValue =JsNumber(o.getTime())
+        //JsString(format.format(o))
     }
 
-    def addAttribute(j:JsValue, key:String, value:JsValue):JsValue = j.as[JsObject] ++ Json.obj(key->value)
+    def addAttribute(j: JsValue, obj: JsObject): JsValue = j.as[JsObject] ++ obj
 
-    def add = IsAuthenticated {
-      (member, request) =>
-        request.body.asJson match {
-          case Some(json) =>
-            val newJson= addAttribute(json,"createDate",JsString(""))
-            addAttribute(newJson,"modifiedDate",JsString("")).validate[A].fold(
-              invalid = (error) => BadRequest(error.toString),
+    def getCacheOrSet(key:String, result : =>SimpleResult) = Cache.getAs[SimpleResult](key) match {
+      case Some(result) => result
+      case None =>
+        Cache.set(key, result)
+        result
+    }
+
+    def add(mvno:Boolean) = AuthenticatedAPI.async(parse.json) {
+      implicit request =>
+        Future {
+          addAttribute(request.body, Json.obj(
+            "createDate" -> JsString(""),
+            "modifiedDate" -> JsString(""),
+            "status" -> JsNumber(models.dbmanager.Status.READY.id)
+          )).validate[A].fold(
+              invalid = (error) => BadRequest(JsError.toFlatJson(error)),
               valid = (form) =>
-                tableManager.create(form) match {
-                  case id: Int if (id > 0) => Ok(Json.toJson(form.withId(id)))
-                  case _ =>
-                    //                Logger.debug("failed to add a C %o", C.unapply())
-                    InternalServerError
+                tableManager.create(mvno, form) match {
+                  case Success(id) =>
+                    Cache.remove(className + "list")
+                    Ok(Json.toJson(form.withId(id)))
+                  case Failure(e:MySQLIntegrityConstraintViolationException) => Forbidden("중복된 데이터가 존재하여 추가할 수 없습니다.")
+                  case Failure(e) =>
+                    InternalServerError(e.getStackTraceString)
                 })
-          case None => BadRequest("Required some json values.")
         }
     }
 
-    def list = IsAuthenticated {
-      (member, request)=>
-        Ok(Json.toJson(tableManager.list))
-    }
-
-    def update(id:Int) = IsAuthenticated {
-      (member, request)=>
-        request.body.asJson match {
-          case Some(json) =>
-            json.validate[A].fold(
-              invalid = (error) => BadRequest(error.toString),
-              valid = (data) =>
-                tableManager.update(id, data) match {
-                  case affectedCount: Int if (affectedCount > 0) => Accepted
-                  case 0 => BadRequest
-                  case _ =>
-                    //                Logger.debug("failed to add a C %o", C.unapply())
-                    InternalServerError
-                })
-          case None => BadRequest("Required some json values.")
+    def list(mvno:Boolean) = AuthenticatedAPI.async {
+      implicit request =>
+        Future {
+          getCacheOrSet(className +mvno.toString+"list", Ok(Json.toJson(tableManager.list(mvno))))
         }
     }
 
-    def delete(id:Int) = IsAuthenticated {
-      (member, request)=>
-        tableManager.delete(id) match {
-          case affectedCount: Int if(affectedCount > 0) => Accepted
-          case _ => NotAcceptable
-        }
+    def update(mvno:Boolean, id: Int) = AuthenticatedAPI.async(parse.json) {
+      implicit request => Future {
+        request.body.validate[A].fold(
+          invalid = (error) => BadRequest(error.toString),
+          valid = (data) =>
+            tableManager.update(mvno, id, data) match {
+              case Success(affectedCount: Int) if (affectedCount > 0) =>
+                Cache.remove(className + mvno.toString + "list")
+                NoContent
+              case Success(_) => NotFound
+              case Failure(e:MySQLIntegrityConstraintViolationException) => Forbidden("중복된 데이터가 존재하여 수정이 불가능합니다.")
+              case Failure(e) => InternalServerError(e.getStackTraceString)
+            })
+      }
     }
+
+    def delete(mvno:Boolean, id: Int) = AuthenticatedAPI.async {
+      Future {
+        tableManager.delete(mvno, id) match {
+          case Success(affectedCount: Int) if (affectedCount > 0) =>
+            Cache.remove(className + mvno.toString + "list")
+            NoContent
+          case Success(_) => NotFound
+          case Failure(e:MySQLIntegrityConstraintViolationException) => Forbidden("연관된 자료가 존재하여 삭제할 수 없습니다.")
+          case Failure(e) => InternalServerError
+        }
+      }
+    }
+  }
+
+  trait StatusAPI[A <: HasStatusWithId[A], T <: DBStatusTable[A], C <: StatusCRUD[A, T]]  {
+    this: API[A, T, C]  =>
+
+//    def updateStatus(mvno:Boolean, id: Int, status: Int) = AuthenticatedAPI.async {
+//      Future {
+//        tableManager.updateStatus(mvno, id, models.dbmanager.Status(status)) match {
+//          case affectedCount: Int if (affectedCount > 0) =>
+//            Cache.remove(className + mvno.toString + "list")
+//            NoContent
+//          case _ => BadRequest
+//        }
+//      }
+//    }
   }
 }

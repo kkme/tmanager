@@ -1,0 +1,88 @@
+<div id="sale-main" class="container">
+    <div class="row">
+        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div class="col-md-10">
+            <div class="page-header"><h1>판매 현황</h1></div>
+            <div class="search well">
+                    <form class="form-horizontal" ng-submit="changePeriod()">
+                        <div class="form-group col-sm-5">
+                            <label for="startDate" class="col-sm-4 control-label">판매일(부터)</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="startDate" ng-model="start"
+                                       placeholder="yyyy-MM-dd" required>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label for="endDate" class="col-sm-4 control-label">판매일(까지)</label>
+
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="endDate" placeholder="yyyy-MM-dd"
+                                       ng-model="end">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm2">
+                            <button class="btn btn-info">재검색</button>
+                        </div>
+                        <p class="help-block" style="padding-left:25px;">* <b> {{startDate|date:'yyyy-MM-dd'}}</b>부터 <b>{{(endDate|date:'yyyy-MM-dd') || "현재"}}까지</b>의 판매 현황입니다. 기간을 변경하시려면, 기간을 선택하신 후 재 검색을 눌러주세요.</p>
+                    </form>
+            </div>
+            <div class="search well">
+                <div class="row form-horizontal">
+                    <div class="form-group col-sm-6">
+                        <label for="name" class="col-sm-3 control-label">모델명</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="이름"
+                                   ng-model="searchOption.model"
+                                   required>
+                            <!--ng-typeahead data-local="models.list" data-datum-key="name"-->
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="color" class="col-sm-3 control-label">색상</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="color" placeholder="색상"
+                                   ng-model="searchOption.color" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="vendor" class="col-sm-3 control-label">입고처</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="vendor" placeholder="입고처"
+                                   ng-model="searchOption.vendor" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="shop" class="col-sm-3 control-label">매장</label>
+
+                        <div class="col-sm-9">
+                            <select class="form-control" id="shop" ng-model="searchOption.shopId"
+                                    ng-options="v.id as v.name for v in shops.list | orderBy:'name'">
+                                <option value="">전체 매장</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="serialNumber" class="col-sm-3 control-label">일련번호</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="serialNumber" placeholder="일련번호"
+                                   ng-model="searchOption.serialNumber" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-success pull-right"
+               type="button" ng-href="/app/{{mvno}}/sales-detail-search">
+                <i class="glyphicon glyphicon-zoom-in"></i> 개별 판매 내역 상세 검색
+            </a>
+
+            <p class="total-label">총 {{filteredList().length}}점 검색됨</p>
+
+            <div ng-include="'/assets/templates/sales/list.html'"/>
+        </div>
+    </div>
+</div>

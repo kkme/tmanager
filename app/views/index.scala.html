@@ -1,7 +1,100 @@
 @(message: String)
 
-@main("Welcome to Play") {
+@main("재고 관리 프로그램") {
+    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/upgrade.browser.css")'>
+    <style>
+        #chrome-placeholder {
+            display:none;
+        }
+    </style>
+    <!--[if lte IE 9]>
+        <script type="text/javascript"
+        src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+        <style>
+            #chrome-placeholder {
+               display:block !important;
+            }
+            .chromeFrameInstallDefaultStyle {
+              width: 100%;
+              border : 0px solid blue;
+              z-index: 3100;
+              opacity : 0.9;
+              filter: alpha(opacity=90);
+              height: 300px;
+            }
+        </style>
+    <![endif]-->
+} {
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation" bs-navbar>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TManager</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/signup">회원가입</a></li>
+                    <li><a href="/login">로그인</a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </div>
+    <div class="container" style="padding-top:60px;">
+        <div class="jumbotron">
+            <h1>재고 관리 프로그램</h1>
+            <p>재고 관리 프로그램 새 버전입니다. 수정 사항이나, 요청 사항이 있을 시에는 thl2516@@gmail.com 로 보내주세요. 이 사이트는 크롬에서 최적화 되어 있습니다.</p>
+<!--            <p><a href="#" class="btn btn-primary btn-lg" role="button">Learn more »</a></p>-->
+        </div>
+    </div>
+    <div class="dialog" id="chrome-placeholder">
+        <div class="innercol">
+            <div class="header">
+                <h1>새 재고관리 프로그램을 사용하기 위해서, 업그레이드가 필요합니다.</h1>
+                <h2>좀 더 나은 서비스를 위해서 아래 중 하나의 브라우저를 선택하셔서 설치하시면 됩니다. 제일 처음의 Chrome Frame은 ActiveX로 지금 버전의 익스플로러에서 바로 사용하실 수 있습니다.</h2>
+            </div>
 
-    @play20.welcome(message)
+            <ul class="downloads">
+                <li>
+                    <div class="first">
+                        <h4 id="download_chromeframe"><a href="http://www.google.com/chromeframe" title="Download Google Chrome Frame"><span>Chrome Frame</span></a></h4>
+                        <h5>For IE 6, 7, 8, 9</h5>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4 id="download_ie"><a href="http://www.microsoft.com/windows/internet-explorer/" title="Download Internet Explorer"><span>Internet Explorer</span></a></h4>
+                        <h5>Version 10+</h5>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4 id="download_firefox"><a href="http://www.mozilla.com/firefox/" title="Download Mozilla Firefox"><span>Mozilla Firefox</span></a></h4>
+                        <h5>Version 4+</h5>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4 id="download_chrome"><a href="http://www.google.com/chrome/" title="Download Google Chrome"><span>Google Chrome</span></a></h4>
+                        <h5>Version 7+</h5>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h4 id="download_safari"><a href="http://www.apple.com/safari/" title="Download Apple Safari"><span>Apple Safari</span></a></h4>
+                        <h5>Version 5+</h5>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="loader" style="display: none;text-align: center; padding-top: 100px;">
+        <img src='@routes.Assets.at("images/ajax-loader.gif")' alt=""/>
+    </div>
+} {
 
 }

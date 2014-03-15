@@ -1,0 +1,45 @@
+
+<div class="col-md-2">
+    <div class="bs-sidebar hidden-print affix hidden-sm hidden-xs" role="complementary"
+         ng-class="{mvno:(mvno == 'mvno')}"
+         bs-navbar>
+        <ul class="nav bs-sidenav">
+            <li ng-if="(mvno == 'mvno')" disabled class="title"><a href="#"><b>알뜰폰</b></a></li>
+            <li ng-if="(mvno != 'mvno')" disabled class="title"><a href="#"><b>일반</b></a></li>
+            <li class="divider"></li>
+
+            <!--<li class="">-->
+                <!--<a ng-href="#download">등록</a>-->
+                <!--<ul class="nav">-->
+                    <!--<li class=""><a ng-href="#download-compiled">Compiled CSS, JS, and fonts</a></li>-->
+                    <!--<li class=""><a ng-href="#download-additional">Additional downloads</a></li>-->
+                    <!--<li class=""><a ng-href="#download-cdn">Bootstrap CDN</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <li data-match-route=".*/vendors">
+                <a ng-href="/app/{{mvno}}/vendors">입고처 관리</a>
+            </li>
+            <li data-match-route=".*/shops">
+                <a ng-href="/app/{{mvno}}/shops">판매점 관리</a>
+            </li>
+            <li data-match-route=".*/models">
+                <a ng-href="/app/{{mvno}}/models">모델 관리</a>
+            </li>
+            <li data-match-route=".*/products/input">
+                <a ng-href="/app/{{mvno}}/products-input">제품 관리</a>
+            </li>
+            <li data-match-route=".*/products">
+                <a ng-href="/app/{{mvno}}/products">재고 현황</a>
+            </li>
+            <li data-match-route=".*/sales">
+                <a ng-href="/app/{{mvno}}/sales">판매 현황</a>
+            </li>
+            <li data-match-route=".*/takebacks">
+                <a ng-href="/app/{{mvno}}/takebacks">반품 현황</a>
+            </li>
+            <li data-match-route=".*/product/trace">
+                <a ng-href="/app/{{mvno}}/products-trace">제품 이력 추적</a>
+            </li>
+        </ul>
+    </div>
+</div>

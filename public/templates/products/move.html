@@ -1,0 +1,26 @@
+<form class="form-horizontal" name="move" style="margin-top: 30px;"
+      ng-submit="products.move(shop, [product], close)">
+    <div class="form-group col-sm-12">
+        <label for="shopName" class="col-sm-3 control-label">대상 매장</label>
+
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="shopName" placeholder="여기에 직접 입력하거나 선택해주세요"
+                   ng-model="shopName" ng-typeahead data-local="shops.list" data-datum-key="name"
+                   ng-change="shop = shops.findByName(shopName); shopId =shop.id"
+                   required>
+        </div>
+        <div class="col-sm-4">
+            <select class="form-control" id="shop" ng-model="shopId"
+                    ng-options="v.id as v.name for v in shops.list | orderBy:'name'"
+                    ng-change="shop= shops.findById(shopId); shopName= shop.name"
+                    required="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-primary" ng-disabled="!shopId">이관하기</button>
+            <button type="button" class="btn btn-cancel" ng-click="close()">취소</button>
+        </div>
+    </div>
+</form>

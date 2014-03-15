@@ -1,0 +1,98 @@
+@(mvno:Boolean, name:String)
+@main("TManager"){
+
+} {
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation" bs-navbar>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/app">TManager</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown" data-match-route="/app/normal/.*">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">일반<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-href="/app/normal/vendors">입고처 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/shops">판매점 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/models">모델 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/products-input">제품 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/products">재고 현황</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/sales">판매 현황</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/takebacks">반품 현황</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/normal/products-trace">제품 이력 추적</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @if(mvno) {
+                        <li class="dropdown" data-match-route="/app/mvno/.*">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">알뜰폰<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a ng-href="/app/mvno/vendors">입고처 관리</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/shops">판매점 관리</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/models">모델 관리</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/products-input">제품 관리</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/products">재고 현황</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/takebacks">반품 현황</a>
+                                </li>
+                                <li>
+                                    <a ng-href="/app/mvno/products-trace">제품 이력 추적</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../navbar/">Default</a></li>
+                    <li><a href="../navbar-static-top/">Static top</a></li>
+                    <li class="active"><a href="./">@name</a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </div>
+    <article ng-view ng-cloak></article>
+    <div id="loader" style="display: none;text-align: center; padding-top: 100px;">
+        <img src='@routes.Assets.at("images/ajax-loader.gif")' alt=""/>
+    </div>
+} {
+    <script src='@routes.Assets.at("javascripts/typeahead.min.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular-route.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular-animate.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular-resource.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular-sanitize.js")'></script>
+    <script src='@routes.Assets.at("javascripts/angular-strap.js")'></script>
+
+    @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("javascripts/config").url)
+}

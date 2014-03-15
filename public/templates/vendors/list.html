@@ -1,0 +1,34 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>이름</th>
+    <th>통신사</th>
+    <th>전화번호</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="vendor in vendors.list | filter:searchOption | limitTo: 50">
+        <td>{{vendor.id}}</td>
+        <td>{{vendor.name}}</td>
+        <td ng-switch="vendor.telecom">
+            <span data-ng-switch-when="1">SKT</span>
+            <span data-ng-switch-when="2">KT</span>
+            <span data-ng-switch-when="3">LGT</span>
+        </td>
+        <td>{{vendor.phone}}</td>
+        <td>
+            <div class="btn-group btn-group-xs">
+                <button class="btn btn-link"
+                        modal="'/assets/templates/vendors/add.modal.html'"
+                        options="{modify:true, newVendor:vendor}"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="vendors.remove(vendor)">
+                    <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

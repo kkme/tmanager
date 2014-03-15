@@ -1,0 +1,45 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>모델명</th>
+    <th>일련번호</th>
+    <th>구매자</th>
+    <th>판매일</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="sale in filteredList() | limitTo: 50">
+        <td>{{sale.id}}</td>
+        <td>{{sale.model}}</td>
+        <td>{{sale.serialNumber}}</td>
+        <td>{{sale.buyerName}}</td>
+        <td>{{sale.createDate| date:'yyyy년MM월dd일'}}</td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-link"
+                        bs-popover="'/assets/templates/sales/detail-small.html'"
+                        data-placement="bottom"
+                        data-trigger="hover"
+                        data-title="제품 상세 정보"
+                        >
+                    <i class="glyphicon glyphicon-info-sign" />
+                </button>
+                <button class="btn btn-link" product-tool="sales/take.back"
+                        ng-click="openTool('danger')"
+                        >
+                    <i class="glyphicon glyphicon-retweet" bs-tooltip="'반품 등록'"/>
+                </button>
+                <button class="btn btn-link"
+                        class="btn btn-link" product-tool="sales/sale"
+                        ng-click="getItem(sale);openTool('info')"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="sales.remove(sale)">
+                    <i class="glyphicon glyphicon-trash" bs-tooltip="'판매 취소'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

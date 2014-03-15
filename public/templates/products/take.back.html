@@ -1,0 +1,17 @@
+<form class="form-horizontal" name="take-back" style="margin-top: 30px;"
+      ng-submit="products.takeBack(product.id,reason,close)">
+    <div class="form-group col-sm-12">
+        <label for="reason" class="col-sm-3 control-label">반납사유</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="reason" placeholder="예)반품-제품 이상"
+                   ng-model="reason" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-primary">반품등록</button>
+            <button type="button" class="btn btn-cancel" ng-click="close()">취소</button>
+        </div>
+    </div>
+</form>

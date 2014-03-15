@@ -1,0 +1,11 @@
+Product log 기록하기.
+판매 등록
+판매 현황 - 반품 판매 취소 판매 수정 등등
+멤버 등급 설정 뷰
+멤버 등급 설정되면 접근 제한 걸기
+excel로 출력.
+
+
+sale Month +1 하기!!
+
+ie8~9 -> chrome extension 설치토록.

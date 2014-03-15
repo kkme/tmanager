@@ -3,62 +3,76 @@
 # ~~~~
 
 # Home page
-GET           /                           controllers.Application.index
-GET           /login                      controllers.Application.login
-POST          /authenticate               controllers.Application.authenticate
+GET           /                                      controllers.Application.index
+GET           /login                                 controllers.Application.login
+GET           /logout                                controllers.Application.logout
+POST          /authenticate                          controllers.Application.authenticate
 
-GET           /signup                     controllers.Application.signUp
-POST          /signup                     controllers.Application.signUpProcess
+GET           /signup                                controllers.Application.signUp
+POST          /signup                                controllers.Application.signUpProcess
 
+GET           /excel/excel.xlsx                      controllers.ExcelCtrl.productList(mvno:Boolean, shopId:Option[Int])
 
-GET           /app                        controllers.Application.appMain(url = "")
-GET           /app/*url                   controllers.Application.appMain(url)
+GET           /app                                   controllers.Application.appMain(url = "")
+GET           /app/*url                              controllers.Application.appMain(url)
+
 
 
 ### API Lists ###
 # Model API
-GET           /api/models                 apis.ModelAPI.list
-POST          /api/models                 apis.ModelAPI.add
-PUT           /api/models/:id             apis.ModelAPI.update(id:Int)
-DELETE        /api/models/:id             apis.ModelAPI.delete(id:Int)
+GET           /api/models                            apis.ModelAPI.list(mvno:Boolean)
+POST          /api/models                            apis.ModelAPI.add(mvno:Boolean)
+PUT           /api/models/:id                        apis.ModelAPI.update(mvno:Boolean, id:Int)
+DELETE        /api/models/:id                        apis.ModelAPI.delete(mvno:Boolean, id:Int)
+
+GET           /api/models/:modelId/colors            apis.ModelColorAPI.searchByModel(mvno:Boolean, modelId:Int)
+POST          /api/models/:modelId/colors            apis.ModelColorAPI.create(mvno:Boolean, modelId:Int)
+PUT           /api/models/:modelId/colors/:id        apis.ModelColorAPI.updateColor(mvno:Boolean, modelId:Int, id:Int)
+DELETE        /api/models/:modelId/colors/:id        apis.ModelColorAPI.deleteColor(mvno:Boolean, modelId:Int, id:Int)
 
 # Modelcolor API
-GET           /api/modelcolors            apis.ModelColorAPI.list
-POST          /api/modelcolors            apis.ModelColorAPI.add
-PUT           /api/modelcolors/:id        apis.ModelColorAPI.update(id:Int)
-DELETE        /api/modelcolors/:id        apis.ModelColorAPI.delete(id:Int)
+GET           /api/modelcolors                       apis.ModelColorAPI.list(mvno:Boolean)
+POST          /api/modelcolors                       apis.ModelColorAPI.add(mvno:Boolean)
+PUT           /api/modelcolors/:id                   apis.ModelColorAPI.update(mvno:Boolean, id:Int)
+DELETE        /api/modelcolors/:id                   apis.ModelColorAPI.delete(mvno:Boolean, id:Int)
 
 # Product API
-GET           /api/products               apis.ProductAPI.list
-POST          /api/products               apis.ProductAPI.add
-PUT           /api/products/:id           apis.ProductAPI.update(id:Int)
-DELETE        /api/products/:id           apis.ProductAPI.delete(id:Int)
+GET           /api/products                          apis.ProductAPI.list(mvno:Boolean, status:Option[Int], startDate:Option[Long])
+POST          /api/products                          apis.ProductAPI.add(mvno:Boolean)
+PUT           /api/products-move                     apis.ProductAPI.moveList(mvno:Boolean)
+POST          /api/products/:id/takeback             apis.ProductAPI.takeBack(mvno:Boolean,id:Int)
+PUT           /api/products/:id                      apis.ProductAPI.update(mvno:Boolean, id:Int)
+DELETE        /api/products/:id                      apis.ProductAPI.delete(mvno:Boolean, id:Int)
+GET           /api/takebacks                         apis.ProductAPI.takeBackList(mvno:Boolean, start: Option[Long], end:Option[Long])
+DELETE        /api/takebacks/:id                     apis.ProductAPI.changeBackToReady(mvno:Boolean, id:Int)
+GET           /api/products-trace                    apis.ProductAPI.traceList(mvno: Boolean, serialNumber, modelId: Option[Int], vendorId: Option[Int])
 
 # ProductLog API
-GET           /api/productlogs            apis.ProductLogAPI.list
-POST          /api/productlogs            apis.ProductLogAPI.add
-PUT           /api/productlogs/:id        apis.ProductLogAPI.update(id:Int)
-DELETE        /api/productlogs/:id        apis.ProductLogAPI.delete(id:Int)
+GET           /api/products/:id/logs                 apis.ProductLogAPI.list(mvno:Boolean, id:Int)
 
 # Sale API
-GET           /api/sales                  apis.SaleAPI.list
-POST          /api/sales                  apis.SaleAPI.add
-PUT           /api/sales/:id              apis.SaleAPI.update(id:Int)
-DELETE        /api/sales/:id              apis.SaleAPI.delete(id:Int)
+GET           /api/sales                             apis.SaleAPI.list(mvno:Boolean, start:Option[Long], end:Option[Long])
+GET           /api/sales-detail                      apis.SaleAPI.detail(mvno:Boolean,name, phoneLast)
+POST          /api/sales                             apis.SaleAPI.add(mvno:Boolean)
+PUT           /api/sales/:id                         apis.SaleAPI.update(mvno:Boolean, id:Int)
+GET           /api/sales/:id                         apis.SaleAPI.retrieveItem(mvno:Boolean,id:Int)
+POST          /api/sales/:id/takeback                apis.SaleAPI.takeBack(mvno:Boolean,id:Int)
+DELETE        /api/sales/:id                         apis.SaleAPI.delete(mvno:Boolean, id:Int)
 
 # Vendor API
-GET           /api/vendors                apis.VendorAPI.list
-POST          /api/vendors                apis.VendorAPI.add
-PUT           /api/vendors/:id            apis.VendorAPI.update(id:Int)
-DELETE        /api/vendors/:id            apis.VendorAPI.delete(id:Int)
+GET           /api/vendors                           apis.VendorAPI.list(mvno:Boolean)
+POST          /api/vendors                           apis.VendorAPI.add(mvno:Boolean)
+PUT           /api/vendors/:id                       apis.VendorAPI.update(mvno:Boolean, id:Int)
+DELETE        /api/vendors/:id                       apis.VendorAPI.delete(mvno:Boolean, id:Int)
 
 
 # Shop API
-GET           /api/shops                  apis.ShopAPI.list
-POST          /api/shops                  apis.ShopAPI.add
-PUT           /api/shops/:id              apis.ShopAPI.update(id:Int)
-DELETE        /api/shops/:id              apis.ShopAPI.delete(id:Int)
+GET           /api/shops                             apis.ShopAPI.list(mvno:Boolean)
+POST          /api/shops                             apis.ShopAPI.add(mvno:Boolean)
+PUT           /api/shops/:id                         apis.ShopAPI.update(mvno:Boolean, id:Int)
+DELETE        /api/shops/:id                         apis.ShopAPI.delete(mvno:Boolean, id:Int)
+
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file               controllers.Assets.at(path="/public", file)
+GET           /assets/*file                          controllers.Assets.at(path="/public", file)

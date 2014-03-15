@@ -1,0 +1,61 @@
+<div id="product-main" class="container">
+    <div class="row">
+        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div class="col-md-10" >
+            <div class="page-header"><h1>재고 현황</h1></div>
+            <div class="search well">
+                <div class="row form-horizontal">
+                    <div class="form-group col-sm-6">
+                        <label for="name" class="col-sm-3 control-label">모델명</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="searchOption.model"
+                                   required>
+                            <!--ng-typeahead data-local="models.list" data-datum-key="name"-->
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="color" class="col-sm-3 control-label">색상</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="color" placeholder="색상" ng-model="searchOption.color" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="vendor" class="col-sm-3 control-label">입고처</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="vendor" placeholder="입고처" ng-model="searchOption.vendor" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="shop" class="col-sm-3 control-label">매장</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="shop" placeholder="매장" ng-model="searchOption.shop" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="serialNumber" class="col-sm-3 control-label">일련번호</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="serialNumber" placeholder="일련번호" ng-model="searchOption.serialNumber" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control" id="excel-shop" ng-model="excel.shopId"
+                        ng-options="v.id as (v.name + '에 대해서') for v in shops.list | orderBy:'name'">
+                    <option value="">전체 매장에 대해서</option>
+                </select>
+            </div>
+            <a class="btn btn-primary"
+               type="button" ng-href="/excel/excel.xlsx?mvno={{(mvno =='mvno') + ((excel.shopId)?'&shopId='+excel.shopId:'')}}"
+                    target="_blank">
+                excel로 출력
+            </a>
+            <a class="btn btn-info pull-right"
+               type="button" ng-href="/app/{{mvno}}/products-move">
+                <i class="glyphicon glyphicon-share-alt"></i> 여러건 제품 이관 하기
+            </a>
+            <p class="total-label">총 {{filtered().length}}점 검색됨</p>
+            <div ng-include="'/assets/templates/products/list.html'"/>
+        </div>
+    </div>
+</div>

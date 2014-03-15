@@ -1,0 +1,41 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>모델명</th>
+    <th>색상</th>
+    <th>입고처</th>
+    <th>매장</th>
+    <th>일련번호</th>
+    <th>생성일</th>
+    <th>상태</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="product in products.list">
+        <td>{{product.id}}</td>
+        <td>{{models.findById(product.modelId).name}}</td>
+        <td>{{colorManager.getColors(product.modelId).findById(product.colorId).color}}</td>
+        <td>{{vendors.findById(product.vendorId).name}}</td>
+        <td>{{shops.findById(product.shopId).name}}</td>
+        <td>{{product.serialNumber}}</td>
+        <td>{{product.createDate | date:'yyyy년MM월dd일'}}</td>
+        <td>{{STATUS[product.status]}}</td>
+        <td ng-switch="product.status">
+            <div class="btn-group btn-group-xs" data-ng-switch-when="1">
+                <button class="btn btn-link"
+                        modal="'/assets/templates/products/add/modal.html'"
+                        options="{modify:true, newProduct:product}"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="products.remove(product)">
+                    <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                </button>
+            </div>
+            <div data-ng-switch-default="" >
+                변경불가
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

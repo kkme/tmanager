@@ -1,0 +1,108 @@
+<div id="product-main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>제품 다(多)건 이관
+                    <a ng-href="/app/{{mvno}}/products" type="button" class="btn btn-default">
+                        <i class="glyphicon glyphicon-arrow-left"></i> 재고로 돌아가기
+                    </a>
+                </h1>
+            </div>
+            <div class="row well form-horizontal">
+                <div class="form-group col-sm-6">
+                    <label for="shop1" class="col-sm-3 control-label">매장</label>
+
+                    <div class="col-sm-9">
+                            <select class="form-control" id="shop1" ng-model="shopId"
+                                    ng-options="v.id as v.name for v in shops.list" required="true"
+                                    ng-change="searchOption.shop = shops.findById(shopId).name">
+
+                            </select>
+                        <input type="hidden" placeholder="매장에서"
+                               ng-model="searchOption.shop"
+                               required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="shop2" class="col-sm-3 control-label">대상 매장</label>
+
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="shop2" placeholder="매장으로"
+                               ng-model="targetName" ng-typeahead data-local="shops.list" data-datum-key="name"
+                               required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="name" class="col-sm-3 control-label">모델명</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="name" placeholder="이름" ng-model="searchOption.model" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="color" class="col-sm-3 control-label">색상</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="color" placeholder="색상" ng-model="searchOption.color" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="vendor" class="col-sm-3 control-label">입고처</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="vendor" placeholder="입고처" ng-model="searchOption.vendor" required>
+                    </div>
+                </div>
+            </div>
+            <!-- filter 된 개수 -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- 제품 목록 -->
+                    <p class="pull-left help-block">매장을 선택 후, 아래 항목을 더블클릭해보세요!</p>
+                    <p class="total-label">총 {{filtered().length}}점</p>
+                    <table class="table table-hover col-sm-6">
+                        <thead>
+                        <th>입고처</th>
+                        <th>모델명</th>
+                        <th>색상</th>
+                        <th>일련번호</th>
+                        </thead>
+                        <tbody ng-show="!!(searchOption.shop)">
+                        <tr ng-repeat="product in filtered() | orderBy:['model','color']"
+                                ng-dblclick="move(product)">
+                            <td>{{product.vendor}}</td>
+                            <td>{{product.model}}</td>
+                            <td>{{product.color}}</td>
+                            <td>{{product.serialNumber}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-sm btn-primary pull-right" ng-click="save()" ng-show="!!target && moveList.length > 0">
+                        여기를 눌러 {{target.name}}으로 이관하기!!
+                    </button>
+                    <p class="pull-left help-block" ng-hide="!!target">이관할 매장을 입력하셔야 이관 가능합니다</p>
+                    <p class="total-label">총 {{moveList.length}}점</p>
+                    <!-- 제품 목록 -->
+                    <table class="table table-hover col-sm-6">
+                        <thead>
+                        <th>입고</th>
+                        <th>모델명</th>
+                        <th>색상</th>
+                        <th>일련번호</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="product in moveList"
+                            ng-dblclick = moveBack(product)
+                                >
+                            <td>{{product.vendor}}</td>
+                            <td>{{product.model}}</td>
+                            <td>{{product.color}}</td>
+                            <td>{{product.serialNumber}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+<div id="trace-detail-main" class="container">
+    <div class="row">
+        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div class="col-md-10">
+            <div class="page-header">
+                <h1>제품 이력 추적</h1>
+            </div>
+            <div class="row well form-horizontal">
+                <form class="form-horizontal" name="detailForm" style="margin-top: 30px;"
+                      ng-submit="traceList(searchOption)">
+                    <div class="form-group col-sm-6">
+                        <label for="vendor" class="col-sm-3 control-label">입고처</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="vendor" ng-model="searchOption.vendorId"
+                                    ng-options="v.id as v.name for v in vendors.list">
+                                <option value="">전체</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="model" class="col-sm-3 control-label">모델</label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-typeahead data-local="models.list" data-datum-key="name" ng-model="modelName"
+                                   type="text" class="form-control" id="model" placeholder="Model"/>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="serial-number" class="col-sm-3 control-label">일련번호</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="serial-number" placeholder="앞자리부터 입력하세요(필수)" ng-model="searchOption.serialNumber" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary" ng-disabled="detailForm.$invalid">검색하기
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-11">
+                        <p class="help-block">* 검색시 입력하신 일련번호로 시작하는 모든 제품이 검색됩니다.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="pull-right" ng-show="list.length > 0"> {{list.length}} 건 검색</div>
+            </div>
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" ng-repeat = "item in list | orderBy:'-createDate'"  ng-class="getColor(item.status)">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse-{{item.id}}">
+                                <div class="row text-center">
+                                    <div class="col-sm-1">{{item.vendor}}</div>
+                                    <div class="col-sm-2">{{item.shop}}</div>
+                                    <div class="col-sm-2">{{item.model}}</div>
+                                    <div class="col-sm-2">{{item.color}}</div>
+                                    <div class="col-sm-1">{{item.serialNumber}}</div>
+                                    <div class="col-sm-1">{{STATUS[item.status]}}</div>
+                                    <div class="col-sm-3">{{item.createDate|date:'(yyyy-MM-dd에 생성됨)'}}</div>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse-{{item.id}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="list-unstyled">
+                                <li ng-repeat="log in productLogs[item.id]">
+                                    제품이 {{log.transferDate | date:'yyyy년MM월dd일 HH시mm분'}}에 {{log.memo}}되었습니다.
+                                </li>
+                            </ul>
+                            <p ng-show="!productLogs[item.id]" class="help-block">(검색중입니다)</p>
+                            <p ng-show="(!!productLogs[item.id] && productLogs[item.id].length ==0)">결과가 없습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

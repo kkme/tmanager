@@ -1,0 +1,72 @@
+<div id="sale-detail-main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>개별 판매 내역 상세 검색
+                    <a ng-href="/app/{{mvno}}/sales" type="button" class="btn btn-default">
+                        <i class="glyphicon glyphicon-arrow-left"></i> 판매 현황으로 돌아가기
+                    </a>
+                </h1>
+            </div>
+            <div class="row well form-horizontal">
+                <form class="form-horizontal" name="detailForm" style="margin-top: 30px;"
+                      ng-submit="search(newItem)">
+                    <div class="form-group col-sm-12">
+                        <label for="sale-name" class="col-sm-2 control-label">고객 성함</label>
+
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="sale-name" placeholder="홍길동"
+                                   ng-model="newItem.name" required>
+                        </div>
+                        <label for="phone" class="col-sm-2 control-label">전화번호 뒷 4자리</label>
+
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="1234"
+                                   ng-model="newItem.phoneLast" ng-pattern="/^\d+$/" ng-minlength="4" ng-maxlength="4"
+                                   required>
+                            <span class="error" ng-show="detailForm.phone.$error.pattern">숫자만 입력해주세요!</span>
+                            <span class="error" ng-show="detailForm.phone.$error.maxlength">정확한 자리 수가 아닙니다.</span>
+                            <span class="error" ng-show="detailForm.phone.$error.minlength">정확한 자리 수가 아닙니다.</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary" ng-disabled="detailForm.$invalid">검색하기
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="pull-right" ng-show="list.length > 0"> 검색된 수 {{list.length}} 건</div>
+            <table class="table table-hover">
+                <thead>
+                <th>입고처</th>
+                <th>매장</th>
+                <th>모델명</th>
+                <th>색상</th>
+                <th>일련번호</th>
+                <th>판매일</th>
+                <th>고객명</th>
+                <th>전화번호</th>
+                <th>주민번호</th>
+                <th>전통신사</th>
+                <th>메모</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in list | orderBy:'sale.createDate'">
+                    <td>{{item.vendor}}</td>
+                    <td>{{item.shop}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.modelColor}}</td>
+                    <td>{{item.serialNumber}}</td>
+                    <td>{{item.sale.createDate | date:'yyyy년MM월dd일'}}</td>
+                    <td>{{item.sale.buyerName}}</td>
+                    <td>{{item.sale.phoneNumberHead + item.sale.phoneNumberTail}}</td>
+                    <td>{{item.sale.ssna}}</td>
+                    <td>{{item.sale.exTelecom}}</td>
+                    <td>{{item.sale.memo}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>모델</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="model in models.list | filter:searchOption | limitTo: 50">
+        <td>{{model.id}}</td>
+        <td>{{model.name}}</td>
+        <td>
+            <div class="btn-group btn-group-xs">
+                <button class="btn btn-link"
+                        modal="'/assets/templates/models/add.modal.html'"
+                        options="{modify:true, newModel:model}"
+                        keyboard="false"
+                        data-backdrop="false"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="models.remove(model)">
+                    <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

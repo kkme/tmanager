@@ -1,0 +1,26 @@
+<div id="model-main" class="container">
+    <div class="row">
+        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div class="col-md-10">
+            <div class="page-header"><h1>모델 관리</h1></div>
+            <div class="search well">
+                <div class="row form-horizontal">
+                    <div class="form-group col-sm-6">
+                        <label for="name" class="col-sm-2 control-label">이름</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="searchOption.name" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-default pull-right"
+                    modal="'/assets/templates/models/add.modal.html'"
+                    options="{modify:false}"
+                    keyboard="false"
+                    >
+                <i class="glyphicon glyphicon-plus"></i> Model 추가
+            </button>
+            <div ng-include="'/assets/templates/models/list.html'"/>
+        </div>
+    </div>
+</div>

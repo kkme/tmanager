@@ -1,0 +1,33 @@
+<form class="form-horizontal" name=create-vendor" ng-controller="VendorCreationCtrl" ng-submit="vendors.save(newVendor,dismiss)">
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">이름</label>
+
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="newVendor.name" required>
+        </div>
+    </div>
+    <div class="form-group">
+
+        <label for="telecom" class="col-sm-2 control-label">Telecom</label>
+        <div class="col-sm-10">
+        <select class="form-control" id="telecom" ng-model="newVendor.telecom"
+                ng-options="v.value as v.name for v in vendors.vendors">
+        </select>
+            <!--<input type="email" class="form-control" id="email" placeholder="이메일"-->
+                   <!--ng-model="newVendor.email" required>-->
+            <!--<p class="help-block">* 차후 Email 발송 서비스를 위해 반드시 등록해주세요.</p>-->
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label">전화번호</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="phone" placeholder="전화번호" ng-model="newVendor.phone" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-cancel" ng-click="clear();dismiss()">취소</button>
+        </div>
+    </div>
+</form>

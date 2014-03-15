@@ -1,0 +1,30 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>이름</th>
+    <th>전화번호</th>
+    <th>이메일</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="shop in shops.list | filter:searchOption | limitTo: 50">
+        <td>{{shop.id}}</td>
+        <td>{{shop.name}}</td>
+        <td>{{shop.phone}}</td>
+        <td>{{shop.email}}</td>
+        <td>
+            <div class="btn-group btn-group-xs">
+                <button class="btn btn-link"
+                        modal="'/assets/templates/shops/add.modal.html'"
+                        options="{modify:true, newShop:shop}"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="shops.remove(shop)">
+                    <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,14 +1,9 @@
 @(loginForm: Form[models.dbmanager.MemberLogin], errorMsg: Option[String] = None)(implicit request: RequestHeader)
 
-@main("Telecommunication Manager") {
+@main("Telecommunication Manager"){
+
+}{
     <div class="container">
-        @if(loginForm.hasGlobalErrors) {
-            <ul>
-            @loginForm.globalErrors.map { error =>
-                <li>@error.message</li>
-            }
-            </ul>
-        }
         @helper.form(action = routes.Application.authenticate(), 'class -> "form-signin") {
             <h2 class="form-signin-heading">Please sign in</h2>
                 <!--
@@ -32,6 +27,15 @@
             </label>
 -->
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+            @if(loginForm.hasGlobalErrors) {
+                <ul class="list-unstyled">
+                @loginForm.globalErrors.map { error =>
+                    <li>@error.message</li>
+                }
+                </ul>
+            }
+
         }
 
     </div> <!-- /container -->
@@ -40,5 +44,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+
+}  {
 
 }

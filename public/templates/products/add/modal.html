@@ -1,0 +1,61 @@
+<div class="modal-dialog" id="product-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title">제품 {{(options.modify)?'수정':'추가'}}</h4></div>
+        <div class="modal-body">
+            <form class="form-horizontal" name="create-product" ng-controller="ProductCreationCtrl"
+                  ng-submit="products.save(newProduct,dismiss)">
+                <div class="form-group col-sm-12">
+                    <label for="vendor" class="col-sm-3 control-label">입고처</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" id="vendor" ng-model="newProduct.vendorId"
+                                ng-options="v.id as v.name for v in vendors.list" disabled required="true">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="shop" class="col-sm-3 control-label">관리매장</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" id="shop" ng-model="newProduct.shopId"
+                                ng-options="v.id as v.name for v in shops.list" required="true" disabled>
+                        </select>
+                        <p class="help-block">* 매장은 재고에서 이관해 주세요. </p>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="model" class="col-sm-3 control-label">모델</label>
+
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="modelName" class="form-control" id="model" disabled
+                               placeholder="Model"/>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="modelColor" class="col-sm-3 control-label">색상</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="modelColor" ng-model="newProduct.colorId"
+                                ng-options="v.id as v.color for v in modelColors.list" required="true">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="serial-number" class="col-sm-3 control-label">일련번호</label>
+
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="serial-number" placeholder="일련번호"
+                               ng-model="newProduct.serialNumber" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <p class="help-block">* 색상과 일련번호만 수정 가능합니다.</p>
+                        <p class="help-block">* 입고처 및 모델명 변경 시는 삭제 후 재추가를 해주세요.</p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-cancel" ng-click="dismiss()">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

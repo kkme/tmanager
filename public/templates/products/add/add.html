@@ -1,0 +1,46 @@
+<form class="form-horizontal" name="create-product" ng-controller="ProductCreationCtrl" ng-submit="products.save(newProduct,clearSerialNumber)">
+    <div class="form-group col-sm-6">
+        <label for="vendor" class="col-sm-3 control-label">입고처</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="vendor" ng-model="newProduct.vendorId"
+                    ng-options="v.id as v.name for v in vendors.list" required="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label for="shop" class="col-sm-3 control-label">관리매장</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="shop" ng-model="newProduct.shopId"
+                    ng-options="v.id as v.name for v in shops.list | orderBy:'name'" required="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label for="model" class="col-sm-3 control-label">모델</label>
+        <div class="col-sm-9">
+            <input type="text" ng-typeahead data-local="models.list" data-datum-key="name" ng-model="modelName"
+                   type="text" class="form-control" id="model" placeholder="Model"/>
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label for="modelColor" class="col-sm-3 control-label">색상</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="modelColor" ng-model="newProduct.colorId"
+                    ng-options="v.id as v.color for v in modelColors.list" required="true">
+            </select>
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label for="serial-number" class="col-sm-3 control-label">일련번호</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="serial-number" placeholder="일련번호" ng-model="newProduct.serialNumber" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-9">
+            <button type="submit" class="btn btn-primary">등록하기</button>
+            <button type="button" class="btn btn-cancel" ng-click="clear()">Clear</button>
+        </div>
+    </div>
+</form>

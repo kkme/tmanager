@@ -1,0 +1,50 @@
+<form class="form-horizontal" name=create-model" ng-controller="ModelCreationCtrl">
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">이름</label>
+
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="newModel.name" required>
+            <p class="help-block">* 검색을 용이하게 하기 위해서 '-'을 빼주세요. </p>
+            <p class="help-block">* 규격(용량)은 괄호로 묶어주세요.</p>
+            <p class="help-block">* SHVE110S (예시: AIP(8G) AIP(16G)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="color" class="col-sm-2 control-label">색상</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input type="text" class="form-control" id="color" placeholder="색상을 추가하려면 여기에 색상을 입력해주세요"
+                       ng-model="newColor"
+                       ng-enter="addColor()">
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" ng-click="addColor()">추가</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <ul class="list-group model-colors col-sm-9 col-sm-offset-2">
+            <li class="list-group-item" ng-repeat = "color in modelColors.list">
+                <span ng-change="modelColors.save(color); edit=!edit"
+                      ng-content-editable="edit" ng-model="color.color"
+                      class="col-sm-8"></span>
+                <span class="pull-right">
+                    <div class="btn-group btn-group-xs">
+                        <button class="btn btn-link" ng-click="edit = !edit">
+                            <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                        </button>
+                        <button class="btn btn-link" ng-click="modelColors.remove(color)">
+                            <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                        </button>
+                    </div>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" ng-click="save(dismiss)" >Submit</button>
+            <button type="button" class="btn btn-cancel" ng-click="clear();dismiss()">취소</button>
+        </div>
+    </div>
+</form>

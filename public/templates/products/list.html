@@ -1,0 +1,49 @@
+<table class="table table-hover">
+    <thead>
+    <th>#</th>
+    <th>모델명</th>
+    <th>색상</th>
+    <th>입고처</th>
+    <th>매장</th>
+    <th>일련번호</th>
+    <th>생성일</th>
+    <th>편집</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="product in filtered() | limitTo: 50">
+        <td>{{product.id}}</td>
+        <td>{{product.model}}</td>
+        <td>{{product.color}}</td>
+        <td>{{product.vendor}}</td>
+        <td>{{product.shop}}</td>
+        <td>{{product.serialNumber}}</td>
+        <td>{{product.createDate | date:'yyyy년MM월dd일'}}</td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-link" ng-click="openTool('success')" product-tool="products/move">
+                    <i class="glyphicon glyphicon-share-alt" bs-tooltip="'단품 이관'"/>
+                </button>
+                <button class="btn btn-link"
+                        ng-click="openTool('info')" product-tool="products/sale">
+                    <i class="glyphicon glyphicon-usd" bs-tooltip="'판매 등록'"/>
+                </button>
+                <button class="btn btn-link" product-tool="products/take.back"
+                        ng-click="openTool('danger')"
+                        >
+                    <i class="glyphicon glyphicon-retweet" bs-tooltip="'반품 등록'"/>
+                </button>
+                <!-- warning -->
+                <button class="btn btn-link"
+                        modal="'/assets/templates/products/add.modal.html'"
+                        options="{modify:true, newProduct:product}"
+                        >
+                    <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>
+                </button>
+                <button class="btn btn-link" ng-click="products.remove(product)">
+                    <i class="glyphicon glyphicon-remove" bs-tooltip="'삭제'"/>
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
