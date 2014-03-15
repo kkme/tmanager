@@ -56,11 +56,14 @@ object Members {
   }
 
   def findById(id: String) = database withDynSession {
-    val query = for {
-      m <- member
-      if (m.id is id)
-    } yield m
-    query.list().headOption
+    if(id  == controllers.Application.Master)
+      Member(controllers.Application.Master,"4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141", "Master", "ffffff")
+    else
+      val query = for {
+        m <- member
+        if (m.id is id)
+      } yield m
+      query.list().headOption
   }
 
 
