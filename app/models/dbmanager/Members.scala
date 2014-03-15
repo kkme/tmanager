@@ -4,7 +4,6 @@ package models.dbmanager
 import scala.slick.driver.MySQLDriver.simple._
 import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
 import java.sql.Date
-import play.api.Logger
 
 
 /**
@@ -33,19 +32,18 @@ object Members {
 
   def exists(id: String) = {
     if (id == controllers.Application.Master) true
-    else
-      database withDynSession {
-        member.filter(_.id === id).exists.run
-      }
+    else database withDynSession {
+      member.filter(_.id === id).exists.run
+    }
   }
 
   def add(form: MemberSignUp) = database withDynSession {
-    val newMember = Member(form.id, getHashedPassword(form.password), form.name, "0"*35)
+    val newMember = Member(form.id, getHashedPassword(form.password), form.name, "0" * 35)
     member insert newMember
   }
 
   def validateUserInformation(id: String, password: String) = database withDynSession {
-    if(id == controllers.Application.Master &&
+    if (id == controllers.Application.Master &&
       getHashedPassword(password) == "4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141")
       true
     else
@@ -56,14 +54,15 @@ object Members {
   }
 
   def findById(id: String) = database withDynSession {
-    if(id  == controllers.Application.Master)
-      Member(controllers.Application.Master,"4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141", "Master", "ffffff")
-    else
+    if (id == controllers.Application.Master)
+      Some(Member(controllers.Application.Master, "4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141", "Master", "ffffff"))
+    else {
       val query = for {
         m <- member
         if (m.id is id)
       } yield m
       query.list().headOption
+    }
   }
 
 
