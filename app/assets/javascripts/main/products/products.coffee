@@ -82,12 +82,14 @@ angular.module('products', [
     'ProductService',
     'ModelService',
     'ShopService',
+    'VendorService',
     '$filter',
     'Sale',
     '$window',
-    ($scope, ProductService, ModelService, ShopService, $filter, Sale, $window)->
+    ($scope, ProductService, ModelService, ShopService, VendorService, $filter, Sale, $window)->
       $scope.products = new ProductService(false)
       $scope.shops = new ShopService(false)
+      $scope.vendors = new VendorService(false)
 
       $scope.saleProduct = (product, item, succ)->
         item.buyerName = newItem.buyerName.replace(/\s/g, "")

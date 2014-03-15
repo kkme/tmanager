@@ -42,8 +42,9 @@ angular.module('takebacks', [
     '$scope',
     'TakebackService',
     'ShopService',
+    'VendorService',
     '$filter',
-    ($scope, TakebackService, ShopService, $filter)->
+    ($scope, TakebackService, ShopService, VendorService, $filter)->
       today = new Date()
       $scope.start = $filter('date')(new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00"),
         'yyyy-MM-dd')
@@ -51,6 +52,7 @@ angular.module('takebacks', [
 
       $scope.takebacks = new TakebackService(false)
       $scope.shops = new ShopService(false)
+      $scope.vendors = new VendorService(false)
 
       $scope.changePeriod = ->
         $scope.takebacks.list = []
