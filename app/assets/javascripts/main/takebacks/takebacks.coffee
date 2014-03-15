@@ -21,7 +21,7 @@ angular.module('takebacks', [
         today = new Date()
         $log.debug "new Takeback.."
         searchOption =
-          start: new Date("#{today.getFullYear() - 1}-#{today.getMonth() + 1}-01 00:00:00").getTime()
+          start: new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00").getTime()
 
         $q.all [
           new TakebackService(true, searchOption).promise
@@ -45,7 +45,7 @@ angular.module('takebacks', [
     '$filter',
     ($scope, TakebackService, ShopService, $filter)->
       today = new Date()
-      $scope.start = $filter('date')(new Date("#{today.getFullYear() - 1}-#{today.getMonth() + 1}-01 00:00:00"),
+      $scope.start = $filter('date')(new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00"),
         'yyyy-MM-dd')
       $scope.startDate = $scope.start
 

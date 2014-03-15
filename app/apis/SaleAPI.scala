@@ -29,7 +29,7 @@ object SaleAPI extends API[Sale, SaleT, CRUD[Sale, SaleT]] {
       val startDate = start.map(new Date(_))
       val endDate = end.map(new Date(_))
       val result = Sales.list(mvno, startDate, endDate).map(s =>
-        SaleOuterForm(s._1, s._2, setName(s._3), s._4, s._5, s._6, s._7, s._8, s._9, s._10, s._11)
+        SaleOuterForm(s._1, s._2, s._3, s._4, s._5, s._6, s._7, s._8, s._9, s._10, s._11)
       )
       Ok(Json.toJson(result))
     }
@@ -39,7 +39,8 @@ object SaleAPI extends API[Sale, SaleT, CRUD[Sale, SaleT]] {
     future {
       Sales.retrieveById(mvno, id) match {
         case Some(sale) =>
-          val newResult = sale.copy(buyerName = setName(sale.buyerName), phoneNumberHead = "", phoneNumberTail = "", ssna = "")
+          //buyerName = setName(sale.buyerName),
+          val newResult = sale.copy(phoneNumberHead = "", phoneNumberTail = "", ssna = "")
           Ok(Json.toJson(newResult))
         case None => NotFound
       }

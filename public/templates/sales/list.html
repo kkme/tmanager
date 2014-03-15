@@ -1,4 +1,4 @@
-<table class="table table-hover">
+<table page-table="filteredList()">
     <thead>
     <th>#</th>
     <th>모델명</th>
@@ -8,7 +8,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="sale in filteredList() | limitTo: 50">
+    <tr ng-repeat="sale in filteredList() | startFrom:currentPage | limitTo:50">
         <td>{{sale.id}}</td>
         <td>{{sale.model}}</td>
         <td>{{sale.serialNumber}}</td>

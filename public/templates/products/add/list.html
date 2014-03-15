@@ -1,4 +1,4 @@
-<table class="table table-hover">
+<table page-table="products.list">
     <thead>
     <th>#</th>
     <th>모델명</th>
@@ -11,7 +11,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="product in products.list">
+    <tr ng-repeat="product in products.list | startFrom:currentPage | limitTo:50">
         <td>{{product.id}}</td>
         <td>{{models.findById(product.modelId).name}}</td>
         <td>{{colorManager.getColors(product.modelId).findById(product.colorId).color}}</td>

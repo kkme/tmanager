@@ -1,0 +1,9 @@
+<div>
+    <table class="table table-hover" ng-transclude>
+    </table>
+    <ul class="pagination">
+        <li ng-class="{disabled:(currentPage == 0)}"><a href="#" ng-click="(currentPage==0)?0:(currentPage = currentPage - 1)" >&laquo;</a></li>
+        <li ng-repeat="item in pages" ng-class="{active:(currentPage == item)}"><a href="#" ng-click="$parent.currentPage = item">{{item +1}}</a></li>
+        <li ng-disab="{disabled:(currentPage +1 == pages.length)}"><a href="#" ng-click="(currentPage+1 ==pages.length)?'':(currentPage = currentPage + 1)">&raquo;</a></li>
+    </ul>
+</div>

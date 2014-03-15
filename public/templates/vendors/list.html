@@ -7,7 +7,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="vendor in vendors.list | filter:searchOption | limitTo: 50">
+    <tr ng-repeat="vendor in vendors.list | filter:searchOption | limitTo:50">
         <td>{{vendor.id}}</td>
         <td>{{vendor.name}}</td>
         <td ng-switch="vendor.telecom">

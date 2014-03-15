@@ -1,4 +1,4 @@
-<table class="table table-hover">
+<table page-table="filtered()">
     <thead>
     <th>#</th>
     <th>모델명</th>
@@ -10,7 +10,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="product in filtered() | limitTo: 50">
+    <tr ng-repeat="product in filtered() | startFrom:currentPage | limitTo:50">
         <td>{{product.id}}</td>
         <td>{{product.model}}</td>
         <td>{{product.color}}</td>

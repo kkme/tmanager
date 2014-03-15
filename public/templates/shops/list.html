@@ -1,4 +1,4 @@
-<table class="table table-hover">
+<table page-table="shops.list">
     <thead>
     <th>#</th>
     <th>이름</th>
@@ -7,7 +7,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="shop in shops.list | filter:searchOption | limitTo: 50">
+    <tr ng-repeat="shop in shops.list | filter:searchOption | startFrom:currentPage | limitTo:50">
         <td>{{shop.id}}</td>
         <td>{{shop.name}}</td>
         <td>{{shop.phone}}</td>

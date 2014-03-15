@@ -51,7 +51,7 @@ angular.module('sales', [
     'VendorService',
     ($scope, SaleService, ModelService, ShopService, $filter, ColorManager, VendorService)->
       today = new Date()
-      $scope.start = $filter('date')(new Date("#{today.getFullYear() - 1}-#{today.getMonth() + 1}-01 00:00:00"),
+      $scope.start = $filter('date')(new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00"),
         'yyyy-MM-dd')
       $scope.startDate = $scope.start
       $scope.sales = new SaleService(false)
