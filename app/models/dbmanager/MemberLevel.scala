@@ -1,4 +1,4 @@
-package MODELs.dbmanager
+package models.dbmanager
 
 /**
  * Created by teddy on 2014. 3. 13..

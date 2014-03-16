@@ -10,6 +10,7 @@ import play.api.cache.Cache
 import play.api.Play.current
 import scala.concurrent.Future
 
+case class MemberLogin(id: String, password: String)
 
 object Application extends Controller with Secured {
   val MvnoService = Play.configuration.getBoolean("mvnoService").getOrElse(false)

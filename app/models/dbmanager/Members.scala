@@ -5,15 +5,10 @@ import scala.slick.driver.MySQLDriver.simple._
 import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
 import java.sql.Date
 
-
-/**
- * Created by teddy on 2014. 1. 20..
- */
 case class MemberSignUp(id: String, password: String, passwordConfirmation: String, name: String)
 
-case class MemberLogin(id: String, password: String)
-
 case class Member(id: String, password: String, name: String, level: String, createDate: Date = new Date(System.currentTimeMillis()))
+
 
 object Members {
   val member = TableQuery[MemberTable]
@@ -30,11 +25,10 @@ object Members {
     md.digest(password.getBytes()).map(x => Integer.toHexString(0xFF & x)).mkString
   }
 
-  def exists(id: String) = {
+  def exists(id: String) = database withDynSession {
     if (id == controllers.Application.Master) true
-    else database withDynSession {
+    else
       member.filter(_.id === id).exists.run
-    }
   }
 
   def add(form: MemberSignUp) = database withDynSession {

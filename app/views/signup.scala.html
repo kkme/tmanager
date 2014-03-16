@@ -1,4 +1,4 @@
-@(signUpForm: Form[_root_.models.dbmanager.MemberSignUp], errorMsg: Option[String] = None)(implicit request: RequestHeader)
+@(signUpForm: Form[models.dbmanager.MemberSignUp], errorMsg: Option[String] = None)(implicit request: RequestHeader)
 
 @main("Telecommunication Manager") {
 
@@ -44,11 +44,6 @@
                 'placeholder -> "Name",
                 'class -> "form-control"
             )
-<!--
-            <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
--->
             <button class="btn btn-lg btn-primary btn-block" type="submit">가입하기</button>
         }
 
