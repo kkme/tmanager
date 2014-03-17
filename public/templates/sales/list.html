@@ -8,7 +8,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="sale in filteredList() | startFrom:currentPage | limitTo:50">
+    <tr ng-repeat="sale in filteredList() |orderBy:'-createDate' | startFrom:currentPage | limitTo:50">
         <td>{{sale.id}}</td>
         <td>{{sale.model}}</td>
         <td>{{sale.serialNumber}}</td>

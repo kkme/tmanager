@@ -97,7 +97,7 @@ angular.module('products', [
       $scope.vendors = new VendorService(false)
 
       $scope.saleProduct = (product, item, succ)->
-        item.buyerName = newItem.buyerName.replace(/\s/g, "")
+        item.buyerName = item.buyerName.replace(/\s/g, "")
         return $window.alert("이름을 정확히 입력해 주세요.") if(angular.isArray(item.buyerName.match(/\*/)) or item.buyerName.length == 0)
         phone = item.phone or ""
         tail = phone
@@ -117,6 +117,7 @@ angular.module('products', [
 
 
         Sale.save savingItem, ()->
+          product.status = 2
           (succ or angular.noop)()
 
       $scope.searchOption =

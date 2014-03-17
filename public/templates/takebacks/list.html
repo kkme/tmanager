@@ -10,7 +10,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="item in filtered() | startFrom:currentPage | limitTo:50">
+    <tr ng-repeat="item in filtered() | orderBy:'-createDate' | startFrom:currentPage | limitTo:50">
         <td>{{item.model}}</td>
         <td>{{item.color}}</td>
         <td>{{item.vendor}}</td>

@@ -7,6 +7,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.future
 import scala.util.{Failure, Success}
 import models.dbmanager.Product
+import play.api.Logger
+import java.util.Calendar
 
 /**
  * Created by teddy on 2014. 1. 21..
@@ -17,6 +19,7 @@ case class TakeBackListForm(id: Int, vendor: String, shop: String, model: String
 
 object ProductAPI extends API[Product, ProductT, CRUD[Product, ProductT]] {
 
+
   val tableManager: CRUD[Product, ProductT] = Products
   implicit val mappingFormat: Format[Product] = Json.format[Product]
   implicit val productOuterFormat: Format[ProductOuterForm] = Json.format[ProductOuterForm]
@@ -25,16 +28,17 @@ object ProductAPI extends API[Product, ProductT, CRUD[Product, ProductT]] {
   def list(mvno: Boolean, status: Option[Int], startDate: Option[Long]) = AuthenticatedAPI.async {
     implicit request =>
       future {
-        //        val now = new Date(System.currentTimeMillis())
-        //        val cal = Calendar.getInstance()
-        //        cal.setTimeInMillis(now.getTime)
-        //        cal.set(Calendar.YEAR, 2014)
-        //        cal.set(Calendar.MONTH, 0)
-        //        cal.set(Calendar.DAY_OF_MONTH, 26)
-        //        cal.set(Calendar.HOUR_OF_DAY, 0)
-        //        cal.set(Calendar.MINUTE, 0)
-        //        cal.set(Calendar.SECOND, 0)
-        startDate.map(new Date(_)) match {
+        val date =startDate map { mill=>
+            val now = new Date(System.currentTimeMillis())
+            val cal = Calendar.getInstance()
+            cal.setTimeInMillis(now.getTime)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            new Date(cal.getTimeInMillis)
+        }
+
+        date match {
           case Some(sDate) =>
             val result = Products.list2(mvno, status, Some(sDate), None)
             Ok(Json.toJson(result))
