@@ -70,13 +70,8 @@ angular.module('products', [
       controller: 'TracingProductCtrl'
       resolve:
         services: services
-    ).when("#{PATH.root}/normal/products",
+    ).when("#{PATH.root}/:mvno/products",
       templateUrl: PATH.template + "/products/main.html"
-      controller: 'ProductListCtrl'
-      resolve:
-        services: services
-    ).when("#{PATH.root}/mvno/products",
-      templateUrl: PATH.template + "/products/mvno_main.html"
       controller: 'ProductListCtrl'
       resolve:
         services: services
@@ -111,7 +106,6 @@ angular.module('products', [
           phoneNumberTail: tail
           phoneNumberHead: head
           memo: item.memo or ""
-          ssna: item.ssna or ""
           buyerName: item.buyerName
           exTelecom: (item.exTelecom or "").toUpperCase()
 

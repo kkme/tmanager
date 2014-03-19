@@ -18,11 +18,12 @@ angular.module('sales', [
       'VendorService',
       'ShopService',
       ($q, SaleService, $log, $route, ModelService, VendorService, ShopService)->
-        today = new Date()
-
         $log.debug "new Sale.."
+        startDate = new Date()
+        startDate.setDate(1)
+        startDate.setHours(0,0,0,0)
         searchOption =
-          start: new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00").getTime()
+          start: startDate.getTime()
 
         $q.all [
           new SaleService(true, searchOption).promise
@@ -50,10 +51,10 @@ angular.module('sales', [
     'ColorManager',
     'VendorService',
     ($scope, SaleService, ModelService, ShopService, $filter, ColorManager, VendorService)->
-      today = new Date()
-      $scope.start = $filter('date')(new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00"),
-        'yyyy-MM-dd')
-      $scope.startDate = $scope.start
+      startDate = new Date()
+      startDate.setDate(1)
+      startDate.setHours(0,0,0,0)
+      $scope.startDate = $filter('date')( startDate, 'yyyy-MM-dd')
       $scope.sales = new SaleService(false)
       $scope.shops = new ShopService(false)
       $scope.vendors = new VendorService(false)
@@ -61,21 +62,43 @@ angular.module('sales', [
       $scope.colorManager = new ColorManager(false)
 
       $scope.changePeriod = ->
-        option =
-          start: new Date($scope.start).getTime()
-        option.end = new Date($scope.end + " 23:59:59").getTime() if($scope.end)
-        $scope.sales.list = []
-        $scope.sales = new SaleService(true, option)
-        $scope.startDate = $scope.start
-        $scope.endDate = $scope.end
+        option = {}
+        option.start = new Date($scope.start).getTime() if($scope.start)
+        if($scope.end)
+          end = new Date($scope.end)
+          end.setHours(23,59,59,999)
+          option.end = (end).getTime()
+        option.name = $scope.name if($scope.name)
+
+        for item of option #if option has property
+          $scope.sales.list = []
+          $scope.sales = new SaleService(true, option)
+          $scope.startDate = $scope.start
+          $scope.endDate = $scope.end
+          $scope.buyerName = $scope.name
+          return
+
 
       $scope.searchOption =
         status: 2
+
       $scope.filteredList = ()->
-        $filter('filter')($scope.sales.list, $scope.searchOption)
+        filtered = $filter('filter')($scope.sales.list, $scope.searchOption)
+        if(!!$scope.search_shopId)
+          $filter('filter')(filtered, {shopId:$scope.search_shopId}, true)
+        else
+          filtered
+      $scope.changeStringToDateTime = (string, begin)->
+        return undefined if(!string)
+        if(begin)
+          new Date(string).getTime()
+        else
+          new Date(string + " 23:59:59").getTime()
 
       $scope.getItem = (item)->
         $scope.sales.detail(item, (newItem)->
+          window.newItem = newItem
+          console.log newItem
           $scope.newItem = angular.copy(newItem)
           item)
   ])

@@ -42,13 +42,13 @@ package object apis {
     implicit val date = new Format[Date] {
       val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
-      def reads(json: JsValue): JsResult[Date] = JsSuccess(new Date(System.currentTimeMillis()))
+      def reads(json: JsValue): JsResult[Date] = JsSuccess(new Date(json.as[Long]))
 
       def writes(o: Date): JsValue =JsNumber(o.getTime())
         //JsString(format.format(o))
     }
 
-    def addAttribute(j: JsValue, obj: JsObject): JsValue = j.as[JsObject] ++ obj
+    def addAttribute(j: JsValue, obj: JsObject): JsValue = obj ++ j.as[JsObject]
 
     def getCacheOrSet(key:String, result : =>SimpleResult) = Cache.getAs[SimpleResult](key) match {
       case Some(result) => result
@@ -61,7 +61,7 @@ package object apis {
       implicit request =>
         Future {
           addAttribute(request.body, Json.obj(
-            "createDate" -> JsString(""),
+            "createDate" -> JsNumber(System.currentTimeMillis()),
             "modifiedDate" -> JsString(""),
             "status" -> JsNumber(models.dbmanager.Status.READY.id)
           )).validate[A].fold(
@@ -69,7 +69,7 @@ package object apis {
               valid = (form) =>
                 tableManager.create(mvno, form) match {
                   case Success(id) =>
-                    Cache.remove(className + "list")
+                    Cache.remove(className + mvno.toString + "list")
                     Ok(Json.toJson(form.withId(id)))
                   case Failure(e:MySQLIntegrityConstraintViolationException) => Forbidden("중복된 데이터가 존재하여 추가할 수 없습니다.")
                   case Failure(e) =>

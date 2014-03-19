@@ -51,7 +51,7 @@ GET           /api/products-trace                    apis.ProductAPI.traceList(m
 GET           /api/products/:id/logs                 apis.ProductLogAPI.list(mvno:Boolean, id:Int)
 
 # Sale API
-GET           /api/sales                             apis.SaleAPI.list(mvno:Boolean, start:Option[Long], end:Option[Long])
+GET           /api/sales                             apis.SaleAPI.list(mvno:Boolean, start:Option[Long], end:Option[Long], name:Option[String])
 GET           /api/sales-detail                      apis.SaleAPI.detail(mvno:Boolean,name, phoneLast)
 POST          /api/sales                             apis.SaleAPI.add(mvno:Boolean)
 PUT           /api/sales/:id                         apis.SaleAPI.update(mvno:Boolean, id:Int)
@@ -71,6 +71,7 @@ GET           /api/shops                             apis.ShopAPI.list(mvno:Bool
 POST          /api/shops                             apis.ShopAPI.add(mvno:Boolean)
 PUT           /api/shops/:id                         apis.ShopAPI.update(mvno:Boolean, id:Int)
 DELETE        /api/shops/:id                         apis.ShopAPI.delete(mvno:Boolean, id:Int)
+
 
 
 

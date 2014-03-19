@@ -14,7 +14,7 @@
 
                     <div class="col-sm-9">
                             <select class="form-control" id="shop1" ng-model="shopId"
-                                    ng-options="v.id as v.name for v in shops.list" required="true"
+                                    ng-options="v.id as v.name for v in shops.list | orderBy:'name'" required="true"
                                     ng-change="searchOption.shop = shops.findById(shopId).name">
 
                             </select>
@@ -25,7 +25,6 @@
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="shop2" class="col-sm-3 control-label">대상 매장</label>
-
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="shop2" placeholder="매장으로"
                                ng-model="targetName" ng-typeahead data-local="shops.list" data-datum-key="name"
@@ -48,6 +47,12 @@
                     <label for="vendor" class="col-sm-3 control-label">입고처</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="vendor" placeholder="입고처" ng-model="searchOption.vendor" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="vendor" class="col-sm-3 control-label">일련번호</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="vendor" placeholder="일련번호" ng-model="searchOption.serialNumber" >
                     </div>
                 </div>
             </div>

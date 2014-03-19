@@ -21,6 +21,19 @@ object Models extends StatusCRUD[Model, ModelT] {
     } yield (p.name)
     Try(query.update(m.name))
   }
+
+  def createWithColors(mvno:Boolean, model:String, color:List[String]) = database withDynTransaction {
+    val query = for {
+      m <- createQuery(mvno, Model(None,model,Status.READY.id))
+      modelColors = color.map(c => ModelColor(None,m,c))
+      colors <- Try(ModelColors.getTable(mvno) ++= modelColors)
+    } yield {
+      m
+    }
+    if(query.isFailure)
+      dynamicSession.rollback()
+    query
+  }
 }
 
 /**

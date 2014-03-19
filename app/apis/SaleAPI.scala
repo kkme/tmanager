@@ -24,11 +24,12 @@ object SaleAPI extends API[Sale, SaleT, CRUD[Sale, SaleT]] {
   implicit val shopOuterForm = Json.format[SaleOuterForm]
   implicit val shopDetailForm = Json.format[SaleDetailForm]
 
-  def list(mvno: Boolean, start: Option[Long], end: Option[Long]) = AuthenticatedAPI.async {
+  def list(mvno: Boolean, start: Option[Long], end: Option[Long], name:Option[String]) = AuthenticatedAPI.async {
     future {
       val startDate = start.map(new Date(_))
       val endDate = end.map(new Date(_))
-      val result = Sales.list(mvno, startDate, endDate).map(s =>
+      val nameString = name.map(_ + "%")
+      val result = Sales.list(mvno, startDate, endDate, nameString).map(s =>
         SaleOuterForm(s._1, s._2, s._3, s._4, s._5, s._6, s._7, s._8, s._9, s._10, s._11)
       )
       Ok(Json.toJson(result))
@@ -39,18 +40,18 @@ object SaleAPI extends API[Sale, SaleT, CRUD[Sale, SaleT]] {
     future {
       Sales.retrieveById(mvno, id) match {
         case Some(sale) =>
-          //buyerName = setName(sale.buyerName),
-          val newResult = sale.copy(phoneNumberHead = "", phoneNumberTail = "", ssna = "")
+          val newResult = sale.copy(phoneNumberHead = "", phoneNumberTail = "", memo = "", exTelecom ="")
           Ok(Json.toJson(newResult))
         case None => NotFound
       }
     }
   }
 
+
   def detail(mvno: Boolean, name: String, phoneLast: String) = AuthenticatedAPI.async {
     future {
       val result = Sales.retrieveDetailByNameAndPhone(mvno, name, phoneLast).map(
-        s => SaleDetailForm(s._1, s._2, s._3, s._4, s._5, s._6)
+        s => SaleDetailForm(s._1.decrypt, s._2, s._3, s._4, s._5, s._6)
       )
       Ok(Json.toJson(result))
     }

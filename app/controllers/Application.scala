@@ -8,7 +8,10 @@ import play.api.data.Forms._
 import play.api.data._
 import play.api.cache.Cache
 import play.api.Play.current
-import scala.concurrent.Future
+import scala.concurrent.{Future, future}
+import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.Crypto
+
 
 case class MemberLogin(id: String, password: String)
 
@@ -35,13 +38,12 @@ object Application extends Controller with Secured {
   )
 
   def index = Action {
-    Logger.debug(MvnoService.toString)
+    Logger.debug(Crypto.encryptAES("4147"))
     Ok(views.html.index("Your new application is ready."))
   }
 
   def login = Action {
     implicit request =>
-      //4f6c3acf7972a3b15756db51e67662f0e7173228cc3b3e54ab97daab38141
       Ok(views.html.login(memberLoginForm))
   }
 

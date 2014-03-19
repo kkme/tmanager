@@ -9,7 +9,7 @@ angular.module('services.sale',[
       method:'GET'
       isArray:false
   )
-]).factory('SaleService', ['Sale', '$q', '$window', '$log', 'PATH', '$http', (Sale, $q, $window, $log, PATH, $http)->
+]).factory('SaleService', ['Sale', '$q', '$window', '$log', 'PATH', '$http','$filter', (Sale, $q, $window, $log, PATH, $http, $filter)->
   beforeService = undefined
   (newable, options)->
     return beforeService if(!newable and beforeService)
@@ -39,13 +39,6 @@ angular.module('services.sale',[
     Service.save = (newItem, callback)->
       newItem.buyerName= newItem.buyerName.replace(/\s/g,"")
       return $window.alert("이름을 정확히 입력해 주세요.") if(angular.isArray(newItem.buyerName.match(/\*/)) or newItem.buyerName.length == 0)
-      phone = newItem.phone or ""
-      if(phone.length > 3)
-        newItem.phoneNumberTail = phone.slice(phone.length-4, phone.length)
-        newItem.phoneNumberHead = phone.slice(0, phone.length-4)
-      else
-        newItem.phoneNumberTail = phone
-        newItem.phoneNumberHead = ""
 
       if(newItem.id)
         oldItem = Service.get(newItem)
@@ -57,6 +50,11 @@ angular.module('services.sale',[
           (callback or angular.noop)(newItem)
         )
       else
+        phone = newItem.phone
+        if(phone.length > 3)
+          newItem.phoneNumberTail = phone.slice(phone.length-4, phone.length)
+          newItem.phoneNumberHead = phone.slice(0, phone.length-4)
+
         Sale.save newItem, (savedItem)->
           Service.list.push(savedItem)
           (callback or angular.noop)(savedItem)
@@ -74,7 +72,10 @@ angular.module('services.sale',[
 #        for item of oldItem
 #          newItem[item] = oldItem[item] if(!newItem[item])
         angular.extend(newItem, oldItem)
+        $log.debug(newItem)
+        newItem.saleDate = $filter('date')( newItem.createDate, 'yyyy-MM-dd')
         (callback or angular.noop)(newItem)
+        newItem
 
 
     Service.findById = (id)->

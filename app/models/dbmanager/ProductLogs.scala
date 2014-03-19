@@ -21,8 +21,8 @@ object ProductLogs extends CRUD[ProductLog, ProductLogT]{
 
   def update(mvno:Boolean, id: Int, m: ProductLog): Try[Int] = ???
 
-  def writeLog(mvno:Boolean, productId:Int, memo:String, transferDate:Timestamp = new Timestamp(System.currentTimeMillis())) = {
-    Try(getTable(mvno) += ProductLog(None, productId, memo, transferDate))
+  def writeLog(mvno:Boolean, productId:Int, memo:String) = {
+    Try(getTable(mvno) += ProductLog(None, productId, memo, new Timestamp(System.currentTimeMillis())))
   }
 
   def listByProductId(mvno:Boolean, productId:Int) = database withDynSession {

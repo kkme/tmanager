@@ -7,6 +7,7 @@ angular.module('app', [
   'directives.pagenationtable'
   'directives.typeahead'
   'filters.startFrom'
+  'filters.buyer'
   'models'
   'products'
   'sales'

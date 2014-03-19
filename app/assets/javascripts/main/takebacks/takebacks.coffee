@@ -18,10 +18,12 @@ angular.module('takebacks', [
       'VendorService',
       'ShopService',
       ($q, TakebackService, $log, $route, ModelService, VendorService, ShopService)->
-        today = new Date()
         $log.debug "new Takeback.."
+        startDate = new Date()
+        startDate.setDate(1)
+        startDate.setHours(0,0,0,0)
         searchOption =
-          start: new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00").getTime()
+          start: startDate.getTime()
 
         $q.all [
           new TakebackService(true, searchOption).promise
@@ -45,9 +47,10 @@ angular.module('takebacks', [
     'VendorService',
     '$filter',
     ($scope, TakebackService, ShopService, VendorService, $filter)->
-      today = new Date()
-      $scope.start = $filter('date')(new Date("#{today.getFullYear()}-#{today.getMonth() + 1}-01 00:00:00"),
-        'yyyy-MM-dd')
+      startDate = new Date()
+      startDate.setDate(1)
+      startDate.setHours(0,0,0,0)
+      $scope.start = $filter('date')(startDate, 'yyyy-MM-dd')
       $scope.startDate = $scope.start
 
       $scope.takebacks = new TakebackService(false)
@@ -58,7 +61,10 @@ angular.module('takebacks', [
         $scope.takebacks.list = []
         option =
           start: new Date($scope.start).getTime()
-        option.end = new Date($scope.end + " 23:59:59").getTime() if($scope.end)
+        if($scope.end)
+          end = new Date($scope.end)
+          end.setHours(23,59,59,999)
+          option.end = (end).getTime()
         $scope.takebacks = new TakebackService(true, option)
         $scope.startDate = $scope.start
         $scope.endDate = $scope.end

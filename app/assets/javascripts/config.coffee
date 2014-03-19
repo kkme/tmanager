@@ -7,6 +7,7 @@ require([
   'main/commons/directives/pagenation.table'
   'main/commons/directives/typeahead'
   'main/commons/filters/startFrom'
+  'main/commons/filters/buyer'
   'main/commons/services/model'
   'main/commons/services/modelColor'
   'main/commons/services/product'

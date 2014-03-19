@@ -6,19 +6,6 @@
             <div class="search well">
                 <div class="row form-horizontal">
                     <div class="form-group col-sm-6">
-                        <label for="name" class="col-sm-3 control-label">모델명</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="searchOption.model"
-                                   required>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label for="color" class="col-sm-3 control-label">색상</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="color" placeholder="색상" ng-model="searchOption.color" required>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
                         <label for="vendor" class="col-sm-3 control-label">입고처</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="vendor" ng-model="vendorId"
@@ -37,6 +24,19 @@
                                 <option value="">전체 매장</option>
                             </select>
 
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="name" class="col-sm-3 control-label">모델명</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="이름" ng-model="searchOption.model"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="color" class="col-sm-3 control-label">색상</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="color" placeholder="색상" ng-model="searchOption.color" required>
                         </div>
                     </div>
                     <div class="form-group col-sm-6">

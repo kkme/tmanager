@@ -46,6 +46,7 @@ angular.module('services.model',[
           (callback or angular.noop)(newItem)
         )
       else
+        newItem.colors = newItem.colors.map((item)->item.color)
         Model.save newItem, (savedItem)->
           Service.list.push(savedItem)
           (callback or angular.noop)(savedItem)
