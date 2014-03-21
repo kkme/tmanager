@@ -12,18 +12,18 @@ angular.module('directives.typeahead', [])
         #이름이 있으면 같은 local(array)를 재사용한다.
         name = $parse(attr.sparkTypeahead)(scope)
         return if !array
-
         createTypeahead = (option)->
           elem.typeahead(option)
           #typeahead가 생성되고 나면, span으로 감싸진다.
           #input의 효과를 span에 줘야한다.
           elem.parent().addClass(attr.class)
 
-
         createTypeahead
           name: name
           valueKey:valueKey
           local: array
+          limit: 10
+          minLength:0
 
         elem.on 'typeahead:closed typeahead:selected typeahead:autocompleted', (ev, val)->
           $log.debug val
@@ -45,6 +45,8 @@ angular.module('directives.typeahead', [])
               name: name
               valueKey:valueKey
               local: newValue
+              limit: 10
+              minLength:0
         , true)
 
 

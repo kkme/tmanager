@@ -10,7 +10,6 @@ import play.api.cache.Cache
 import play.api.Play.current
 import scala.concurrent.{Future, future}
 import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.libs.Crypto
 
 
 case class MemberLogin(id: String, password: String)
@@ -38,7 +37,6 @@ object Application extends Controller with Secured {
   )
 
   def index = Action {
-    Logger.debug(Crypto.encryptAES("4147"))
     Ok(views.html.index("Your new application is ready."))
   }
 
