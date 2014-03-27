@@ -2,6 +2,8 @@ name := "TManager"
 
 version := "1.0-SNAPSHOT"
 
+scalaVersion := "2.10.4"
+
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "2.0.0-RC1",
   "mysql" % "mysql-connector-java" % "5.1.28",

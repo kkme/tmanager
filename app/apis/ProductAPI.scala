@@ -25,22 +25,33 @@ object ProductAPI extends API[Product, ProductT, CRUD[Product, ProductT]] {
   implicit val productOuterFormat: Format[ProductOuterForm] = Json.format[ProductOuterForm]
   implicit val takeBackListForm: Format[TakeBackListForm] = Json.format[TakeBackListForm]
 
-  def list(mvno: Boolean, status: Option[Int], startDate: Option[Long]) = AuthenticatedAPI.async {
+  def list(mvno: Boolean, status: Option[Int], start: Option[Long], end:Option[Long]) = AuthenticatedAPI.async {
     implicit request =>
       future {
-        val date =startDate map { mill=>
-            val now = new Date(System.currentTimeMillis())
+        val date =start map { mill=>
+            val now = new Date(mill)
             val cal = Calendar.getInstance()
             cal.setTimeInMillis(now.getTime)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
             cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             new Date(cal.getTimeInMillis)
+        }
+        val endDate = end map { mill =>
+          val now = new Date(mill)
+          val cal = Calendar.getInstance()
+          cal.setTimeInMillis(now.getTime)
+          cal.set(Calendar.HOUR_OF_DAY, 23)
+          cal.set(Calendar.MINUTE, 59)
+          cal.set(Calendar.SECOND, 59)
+          cal.set(Calendar.MILLISECOND, 999)
+          new Date(cal.getTimeInMillis)
         }
 
         date match {
           case Some(sDate) =>
-            val result = Products.list2(mvno, status, Some(sDate), None)
+            val result = Products.list2(mvno, status, Some(sDate), endDate)
             Ok(Json.toJson(result))
           case None =>
             val result = Products.list(mvno, status.getOrElse(1), None, None).map(i => ProductOuterForm(i._1, i._2, i._3, i._4, i._5, i._6, i._7, i._8))

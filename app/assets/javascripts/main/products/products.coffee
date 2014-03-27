@@ -24,9 +24,10 @@ angular.module('products', [
         today = new Date()
         $log.debug "new Product.."
         #        isMvno = $route.current.params.mvno is "mvno"
-        $log.debug $route
+        startDate = new Date()
+        startDate.setHours(0,0,0,0)
         searchOption =
-          startDate: new Date("#{today.toDateString()} 00:00:00").getTime()
+          start: startDate.getTime()
 
         $q.all [
           new ProductService(true, searchOption).promise
@@ -56,22 +57,22 @@ angular.module('products', [
 
 
     $routeProvider.when("#{PATH.root}/:mvno/products-input",
-      templateUrl: PATH.template + "/products/add/main.html"
+      templateUrl: PATH.inventoryTemplate + "/products/add/main.html"
       controller: 'ProductCreationCtrl'
       resolve:
         services: todayProducts
     ).when("#{PATH.root}/:mvno/products-move",
-      templateUrl: PATH.template + "/products/move/move.html"
+      templateUrl: PATH.inventoryTemplate + "/products/move/move.html"
       controller: 'ProductMoveCtrl'
       resolve:
         services: services
     ).when("#{PATH.root}/:mvno/products-trace",
-      templateUrl: PATH.template + "/products/trace.html"
+      templateUrl: PATH.inventoryTemplate + "/products/trace.html"
       controller: 'TracingProductCtrl'
       resolve:
         services: services
     ).when("#{PATH.root}/:mvno/products",
-      templateUrl: PATH.template + "/products/main.html"
+      templateUrl: PATH.inventoryTemplate + "/products/main.html"
       controller: 'ProductListCtrl'
       resolve:
         services: services
@@ -131,7 +132,8 @@ angular.module('products', [
     'ShopService',
     'ColorManager',
     'STATUS',
-    ( $scope, ProductService, ModelService, VendorService, ModelColorService, ShopService, ColorManager, STATUS)->
+    ($scope, ProductService, ModelService, VendorService, ModelColorService, ShopService, ColorManager, STATUS)->
+      $scope.search = false
       $scope.products = new ProductService(false)
       $scope.models = new ModelService(false)
       $scope.vendors = new VendorService(false)
@@ -139,9 +141,7 @@ angular.module('products', [
       $scope.colorManager = new ColorManager(false)
       $scope.STATUS = STATUS
 
-      $scope.original = if($scope.options and $scope.options.newProduct) then $scope.options.newProduct else
-        {}
-      #      isOnlyMvno: isMvno
+      $scope.original = if($scope.options and $scope.options.newProduct) then $scope.options.newProduct else {}
 
       $scope.clearSerialNumber = ()->
         $scope.newProduct.serialNumber = undefined
@@ -171,6 +171,37 @@ angular.module('products', [
             return $scope.modelColors = new ModelColorService(item)
       )
       $scope.clear()
+
+      $scope.changeSearchMode = ()->
+        $scope.search = !$scope.search
+        $scope.products.list = []
+        if(!$scope.search)
+          startDate = new Date()
+          startDate.setHours(0,0,0,0)
+          searchOption =
+            start: startDate.getTime()
+
+          $scope.products = new ProductService(true, searchOption)
+
+      $scope.changePeriod = ->
+        option =
+          start : $scope.changeStringToDateTime($scope.start, true)
+        if($scope.end)
+          option.end = $scope.changeStringToDateTime($scope.end, false)
+        $scope.products = new ProductService(true, option)
+        $scope.startDate = $scope.start
+        $scope.endDate = $scope.end
+
+      $scope.changeStringToDateTime = (string, begin)->
+        return undefined if(!string)
+        if(begin)
+          start = new Date(string)
+          start.setHours(0,0,0,0)
+          start.getTime()
+        else
+          end = new Date(string)
+          end.setHours(23,59,59,999)
+          end.getTime()
   ])
 
 .controller('ProductMoveCtrl', [
@@ -224,16 +255,16 @@ angular.module('products', [
     $resource(PATH.api + "/products/:id/logs", {id: '@id'})
   ])
 .directive('panelGroup', ()->
-    restrict: 'C'
-    link: (scope, elem, attr)->
-      elem.on('show.bs.collapse', '.collapse', ()->
-        id = $(this).attr('id')
-        pattern = /^collapse\-(\d+)$/g
-        result = pattern.exec(id)
-        if(result.length == 2)
-          scope.$emit('loading', result[1])
-      )
-  )
+  restrict: 'C'
+  link: (scope, elem, attr)->
+    elem.on('show.bs.collapse', '.collapse', ()->
+      id = $(this).attr('id')
+      pattern = /^collapse\-(\d+)$/g
+      result = pattern.exec(id)
+      if(result.length == 2)
+        scope.$emit('loading', result[1])
+    )
+)
 .controller('TracingProductCtrl', [
     '$scope',
     'TraceList',

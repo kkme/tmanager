@@ -5,7 +5,7 @@ angular.module('directives.pagenationtable',[
     restrict : 'A'
     transclude : true
     replace : true
-    templateUrl : PATH.template + "/directives/pagenation.table.html"
+    templateUrl : PATH.inventoryTemplate + "/directives/pagenation.table.html"
     link :(scope, elem, attr)->
       list = $parse(attr.pageTable)(scope)
       scope.$watchCollection(attr.pageTable, (col)->

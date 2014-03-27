@@ -79,6 +79,36 @@
                 <ul class="nav navbar-nav navbar-right">
 <!--                    <li><a href="../navbar/">Default</a></li>
                     <li><a href="../navbar-static-top/">Static top</a></li> -->
+
+                    <li class="dropdown" data-match-route="/app/mvno/.*">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">정산(알뜰폰 - 테스트중)<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-href="/app/mvno/vendors">출고가 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/shops">요금제 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/models">당월 차감 항목 관리</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/products-input">정산</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/products">전월 마진</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/sales">판매 현황</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/takebacks">반품 현황</a>
+                            </li>
+                            <li>
+                                <a ng-href="/app/mvno/products-trace">제품 이력 추적</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="active"><a href="./">@name</a></li>
                     <li><a href="/logout" target="_self">로그아웃</a></li>
                 </ul>
@@ -90,7 +120,7 @@
         <img src='@routes.Assets.at("images/ajax-loader.gif")' alt=""/>
     </div>
 } {
-    <script src='@routes.Assets.at("javascripts/typeahead.js")'></script>
+    <script src='@routes.Assets.at("javascripts/typeahead.min.js")'></script>
     <script src='@routes.Assets.at("javascripts/angular.js")'></script>
     <script src='@routes.Assets.at("javascripts/angular-route.js")'></script>
     <script src='@routes.Assets.at("javascripts/angular-animate.js")'></script>

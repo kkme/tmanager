@@ -34,6 +34,7 @@ angular.module('app', [
         config.params = config.params || {}
         if(angular.isString(config.url) and !config.url.match(/\.html$/g))
           config.params.mvno = $rootScope.mvno is "mvno"
+          config.headers['cache-control'] ='no-cache'
         config || $q.when(config)
       responseError: (response)->
         switch response.status

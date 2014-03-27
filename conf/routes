@@ -37,7 +37,7 @@ PUT           /api/modelcolors/:id                   apis.ModelColorAPI.update(m
 DELETE        /api/modelcolors/:id                   apis.ModelColorAPI.delete(mvno:Boolean, id:Int)
 
 # Product API
-GET           /api/products                          apis.ProductAPI.list(mvno:Boolean, status:Option[Int], startDate:Option[Long])
+GET           /api/products                          apis.ProductAPI.list(mvno:Boolean, status:Option[Int], start:Option[Long], end:Option[Long])
 POST          /api/products                          apis.ProductAPI.add(mvno:Boolean)
 PUT           /api/products-move                     apis.ProductAPI.moveList(mvno:Boolean)
 POST          /api/products/:id/takeback             apis.ProductAPI.takeBack(mvno:Boolean,id:Int)

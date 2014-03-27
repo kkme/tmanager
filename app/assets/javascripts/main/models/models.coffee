@@ -13,7 +13,7 @@ angular.module('models', [
   ]
 
   $routeProvider.when("#{PATH.root}/:mvno/models",
-    templateUrl: PATH.template + "/models/main.html"
+    templateUrl: PATH.inventoryTemplate + "/models/main.html"
     controller: 'ModelListCtrl'
     resolve:
       models: modelService

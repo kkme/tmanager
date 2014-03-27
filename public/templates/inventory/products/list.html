@@ -10,7 +10,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="product in filtered() | startFrom:currentPage | limitTo:50">
+    <tr ng-repeat="product in filtered() | orderBy:['model','color'] | startFrom:currentPage | limitTo:50">
         <td>{{product.id}}</td>
         <td>{{product.model}}</td>
         <td>{{product.color}}</td>
@@ -34,7 +34,7 @@
                 </button>
                 <!-- warning -->
                 <button class="btn btn-link hide"
-                        modal="'/assets/templates/products/add.modal.html'"
+                        modal="'/assets/templates/inventory/products/add.modal.html'"
                         options="{modify:true, newProduct:product}"
                         >
                     <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>

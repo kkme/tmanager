@@ -33,12 +33,12 @@ angular.module('sales', [
         ]
     ]
     $routeProvider.when("#{PATH.root}/:mvno/sales",
-      templateUrl: PATH.template + "/sales/main.html"
+      templateUrl: PATH.inventoryTemplate + "/sales/main.html"
       controller: 'SaleListCtrl'
       resolve:
         services: thisMonthSales
     ).when("#{PATH.root}/:mvno/sales-detail-search",
-      templateUrl: PATH.template + "/sales/detail.html"
+      templateUrl: PATH.inventoryTemplate + "/sales/detail.html"
       controller: 'DetailSearchCtrl'
     )
 ])
@@ -63,11 +63,9 @@ angular.module('sales', [
 
       $scope.changePeriod = ->
         option = {}
-        option.start = new Date($scope.start).getTime() if($scope.start)
+        option.start = $scope.changeStringToDateTime($scope.start, true) if($scope.start)
         if($scope.end)
-          end = new Date($scope.end)
-          end.setHours(23,59,59,999)
-          option.end = (end).getTime()
+          option.end = $scope.changeStringToDateTime($scope.end, false)
         option.name = $scope.name if($scope.name)
 
         for item of option #if option has property
@@ -91,9 +89,13 @@ angular.module('sales', [
       $scope.changeStringToDateTime = (string, begin)->
         return undefined if(!string)
         if(begin)
-          new Date(string).getTime()
+          start = new Date(string)
+          start.setHours(0,0,0,0)
+          start.getTime()
         else
-          new Date(string + " 23:59:59").getTime()
+          end = new Date(string)
+          end.setHours(23,59,59,999)
+          end.getTime()
 
       $scope.getItem = (item)->
         $scope.sales.detail(item, (newItem)->

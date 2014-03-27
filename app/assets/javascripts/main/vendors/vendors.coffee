@@ -8,7 +8,7 @@ angular.module('vendors', [
   ]
 
   $routeProvider.when("#{PATH.root}/:mvno/vendors",
-    templateUrl: PATH.template + "/vendors/main.html"
+    templateUrl: PATH.inventoryTemplate + "/vendors/main.html"
     controller: 'VendorListCtrl'
     resolve:
       vendors: vendorService

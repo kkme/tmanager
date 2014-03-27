@@ -1,0 +1,42 @@
+<div id="product-main" class="container">
+    <div class="row">
+        <div ng-include="'/assets/templates/inventory/left.menu.html'"></div>
+        <div class="col-md-10">
+            <div class="page-header"><h1>제품 입고 등록</h1></div>
+            <div ng-include="'/assets/templates/inventory/products/add/add.html'" ng-hide="search"></div>
+            <div class="row">
+                <button class="btn btn-success pull-right"
+                        ng-class="{active:search}"
+                        ng-click="changeSearchMode()">
+                    <i class="glyphicon glyphicon-search"></i> 과거 이력 조회
+                </button>
+                <div class="total-label" ng-hide="search">오늘 입고된 제품은 총 {{products.list.length}}점 입니다.</div>
+            </div>
+            <div class="row well" style="margin-top:10px;" ng-show="search">
+                <form class="form-horizontal" ng-submit="changePeriod()">
+                    <div class="form-group col-sm-5">
+                        <label for="startDate" class="col-sm-4 control-label">입고일(부터)</label>
+
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="startDate" ng-model="start"
+                                   placeholder="yyyy-MM-dd">
+
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-5">
+                        <label for="endDate" class="col-sm-4 control-label">입고일(까지)</label>
+
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="endDate" placeholder="yyyy-MM-dd"
+                                   ng-model="end">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button class="btn btn-info" type="submit" ng-disable="!(start)">검색</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-include="'/assets/templates/inventory/products/add/list.html'"/>
+        </div>
+    </div>
+</div>

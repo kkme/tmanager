@@ -1,6 +1,6 @@
 <div id="take-back-main" class="container">
     <div class="row">
-        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div ng-include="'/assets/templates/inventory/left.menu.html'"></div>
         <div class="col-md-10">
             <div class="page-header"><h1>반품 현황</h1></div>
             <div class="search well">
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <p class="total-label">총 {{filtered().length}}점 검색됨</p>
-            <div ng-include="'/assets/templates/takebacks/list.html'"/>
+            <div ng-include="'/assets/templates/inventory/takebacks/list.html'"/>
         </div>
     </div>
 </div>

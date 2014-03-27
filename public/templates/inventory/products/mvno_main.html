@@ -1,6 +1,6 @@
 <div id="product-main" class="container">
     <div class="row">
-        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div ng-include="'/assets/templates/inventory/left.menu.html'"></div>
         <div class="col-md-10" >
             <div class="page-header"><h1>재고 현황</h1></div>
             <div class="search well">
@@ -58,7 +58,7 @@
                 <i class="glyphicon glyphicon-share-alt"></i> 여러건 제품 이관 하기
             </a>
             <p class="total-label">총 {{filtered().length}}점 검색됨</p>
-            <div ng-include="'/assets/templates/products/list.html'"/>
+            <div ng-include="'/assets/templates/inventory/products/list.html'"/>
         </div>
     </div>
 </div>

@@ -22,14 +22,15 @@ angular.module('products.tools', [
     '$templateCache',
     '$timeout',
     '$http',
-    (pToolService, $compile, $q, $templateCache, $timeout, $http)->
+    'PATH',
+    (pToolService, $compile, $q, $templateCache, $timeout, $http, PATH)->
       restrict: 'A'
       scope: true
       link: (scope, elem, attr)->
         tr = $(elem.parents()[2])
         alreadyOpened = false
         trColor = undefined
-        templateUrl = "/assets/templates/#{attr.productTool}.html"
+        templateUrl = PATH.inventoryTemplate + "/#{attr.productTool}.html"
 
         scope.openTool = (color)->
           if(!alreadyOpened)

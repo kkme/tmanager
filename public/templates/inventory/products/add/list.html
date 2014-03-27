@@ -11,7 +11,7 @@
     <th>편집</th>
     </thead>
     <tbody>
-    <tr ng-repeat="product in products.list | startFrom:currentPage | limitTo:50">
+    <tr ng-repeat="product in products.list | orderBy:'createDate' | startFrom:currentPage | limitTo:50">
         <td>{{product.id}}</td>
         <td>{{models.findById(product.modelId).name}}</td>
         <td>{{colorManager.getColors(product.modelId).findById(product.colorId).color}}</td>
@@ -23,7 +23,7 @@
         <td ng-switch="product.status">
             <div class="btn-group btn-group-xs" data-ng-switch-when="1">
                 <button class="btn btn-link"
-                        modal="'/assets/templates/products/add/modal.html'"
+                        modal="'/assets/templates/inventory/products/add/modal.html'"
                         options="{modify:true, newProduct:product}"
                         >
                     <i class="glyphicon glyphicon-pencil" bs-tooltip="'수정'"/>

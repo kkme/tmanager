@@ -33,7 +33,7 @@ angular.module('takebacks', [
     ]
 
     $routeProvider.when("#{PATH.root}/:mvno/takebacks",
-      templateUrl: PATH.template + "/takebacks/main.html"
+      templateUrl: PATH.inventoryTemplate + "/takebacks/main.html"
       controller: 'TakebackListCtrl'
       resolve:
         services: todayTakebacks
@@ -60,15 +60,23 @@ angular.module('takebacks', [
       $scope.changePeriod = ->
         $scope.takebacks.list = []
         option =
-          start: new Date($scope.start).getTime()
+          start : $scope.changeStringToDateTime($scope.start, true)
         if($scope.end)
-          end = new Date($scope.end)
-          end.setHours(23,59,59,999)
-          option.end = (end).getTime()
+          option.end = $scope.changeStringToDateTime($scope.end, false)
         $scope.takebacks = new TakebackService(true, option)
         $scope.startDate = $scope.start
         $scope.endDate = $scope.end
 
+      $scope.changeStringToDateTime = (string, begin)->
+        return undefined if(!string)
+        if(begin)
+          start = new Date(string)
+          start.setHours(0,0,0,0)
+          start.getTime()
+        else
+          end = new Date(string)
+          end.setHours(23,59,59,999)
+          end.getTime()
       $scope.searchOption =
         status: 3
 

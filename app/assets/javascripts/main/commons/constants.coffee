@@ -8,6 +8,7 @@ angular.module("constants.path",[])
   .constant("PATH",
     root: "/app"
     api : "/api"
+    inventoryTemplate: "/assets/templates/inventory"
     template: "/assets/templates"
   )
 angular.module("constants.status",[])

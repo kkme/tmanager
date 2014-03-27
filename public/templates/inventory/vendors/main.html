@@ -1,6 +1,6 @@
 <div id="vendor-main" class="container">
     <div class="row">
-        <div ng-include="'/assets/templates/left.menu.html'"></div>
+        <div ng-include="'/assets/templates/inventory/left.menu.html'"></div>
         <div class="col-md-10">
             <div class="page-header"><h1>입고처 관리</h1></div>
             <div class="search well">
@@ -23,12 +23,12 @@
                 </div>
             </div>
             <button class="btn btn-default pull-right"
-                    modal="'/assets/templates/vendors/add.modal.html'"
+                    modal="'/assets/templates/inventory/vendors/add.modal.html'"
                     options="{modify:false}"
                     >
                 <i class="glyphicon glyphicon-plus"></i> Vendor 추가
             </button>
-            <div ng-include="'/assets/templates/vendors/list.html'"/>
+            <div ng-include="'/assets/templates/inventory/vendors/list.html'"/>
         </div>
     </div>
 </div>
