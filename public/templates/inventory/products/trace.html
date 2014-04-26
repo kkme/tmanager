@@ -28,7 +28,7 @@
                         <label for="serial-number" class="col-sm-3 control-label">일련번호</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="serial-number" placeholder="앞자리부터 입력하세요(필수)" ng-model="searchOption.serialNumber" required>
+                            <input type="text" class="form-control" id="serial-number" placeholder="끝자리까지 입력하세요(필수)" ng-model="searchOption.serialNumber" required>
                         </div>
                     </div>
                     <div class="form-group col-sm-6">
@@ -38,7 +38,8 @@
                         </div>
                     </div>
                     <div class="col-sm-offset-1 col-sm-11">
-                        <p class="help-block">* 검색시 입력하신 일련번호로 시작하는 모든 제품이 검색됩니다.</p>
+                        <p class="help-block">* 검색시 입력하신 일련번호로 끝나는 모든 제품이 검색됩니다.</p>
+                        <p class="help-block">* 예: 9876543 -> 543만 입력하면 검색가능</p>
                     </div>
                 </form>
             </div>

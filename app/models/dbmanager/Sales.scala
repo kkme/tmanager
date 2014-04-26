@@ -164,6 +164,9 @@ object Sales extends CRUD[Sale, SaleT] {
       dynamicSession.rollback()
     result
   }
+  def deleteByProductIdQuery(mvno: Boolean, productId: Int): Try[Int] = {
+    Try(getTable(mvno).where(_.productId is productId).delete)
+  }
 }
 
 /**

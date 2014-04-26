@@ -122,7 +122,7 @@ object Products extends StatusCRUD[Product, ProductT] {
     val vendor = vendorId map (v => ((p: ProductT) => p.vendorId is v))
 
     val query = for {
-      p <- withFilters(getTable(mvno), List(model,vendor)) if (p.serialNumber like  serialNumber+"%")
+      p <- withFilters(getTable(mvno), List(model,vendor)) if (p.serialNumber like  "%"+serialNumber)
       s <- Shops.getTable(mvno) if (p.shopId is s.id)
       m <- Models.getTable(mvno) if (p.modelId is m.id)
       c <- ModelColors.getTable(mvno) if (p.colorId is c.id)
@@ -153,6 +153,8 @@ object Products extends StatusCRUD[Product, ProductT] {
   def takeBack(mvno: Boolean, id: Int, reason: String) = database withDynTransaction {
     val result = for {
       unitLog <- ProductLogs.writeLog(mvno, id, reason)
+      //혹시 여러명의 사용자가 옮길경우 판매에 존재하는데 재고에서 옮기면 판매 테이블이 삭제되지 않는다.
+      deleteSale <- Sales.deleteByProductIdQuery(mvno, id)
       updatedProductStatus <- updateStatus(mvno, id, Status.TAKE_BACK)
     } yield {
       updatedProductStatus
